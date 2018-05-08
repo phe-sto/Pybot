@@ -1,19 +1,20 @@
 """
-###########################################################################################################################################
-# Jython source to be used in sikuli, not pure python or python3
-# Initialize the script by importing the required libraries for test (a.k.a unittest) and system to using windows commands.
+########################################################################################################################
+# Auto class can be used as Jython source to be used in sikuli IDE, not pure python or python3
+# Initialize the script by importing the required libraries for test (a.k.a unittest), subprocess and system to using
+# Windows commands
+# Lackey package provide a wrapper arround Sikuli
 # Source description
 # -> !!! Coding style is CamelCase for classes and lowercase_separated_by_underscores for methods and variables !!! <-
-###########################################################################################################################################
+########################################################################################################################
 """
-import platform
 import re
-import sys
 # Import unittest in case of test automation
 import unittest
 # To start program of command
 from os import system
 from subprocess import check_output
+
 # Lackey library, a sikuli wrapper
 from lackey import *
 
@@ -23,19 +24,19 @@ __license__ = "No license"
 __version__ = "1.0.0"
 __maintainer__ = "Christophe Brun"
 __email__ = "christophe.brun@papit.fr"
-__status__ = "Developpement"
+__status__ = "Development"
 
 """
-###########################################################################################################################################
-# Custom class to be used in as an abstraction layer to sikuli methods and corresponding exception.
-# Can used command to start/stop program or use commands.
-# Interpretation of GUI, access to windows sytem commands
-###########################################################################################################################################
+########################################################################################################################
+# Custom class to be used in as an abstraction layer to sikuli methods and corresponding exception
+# Can used command to start/stop program or use commands, access Android mirroring
+# Interpretation of GUI, access to windows system commands
+########################################################################################################################
 """
 
 
 class AutoException(Exception):
-    """Automation problem with exception"""
+    """Automation exception"""
     pass
 
 
@@ -49,7 +50,7 @@ class Auto:
         Constructor of the Auto class
         """
         if platform.system() != "Windows":
-            AutoException("Auto class only ru on windows platform at the moment")
+            raise AutoException("Auto class only for Windows platform at the moment")
         self.python_version = sys.version
         self.OS_type = platform.system()
         self.OS_version = platform.platform()
@@ -64,7 +65,8 @@ class Auto:
 
     def check_click(self, img, sleep_sec=0, after_click=None):
         """
-        Method checking if bouton exist and clicking on it, return True is clicked False on contrary. Eventually sleep sleep_sec seconds after
+        Method checking if button exist and clicking on it, return True is clicked False on contrary. Eventually sleep
+        sleep_sec seconds after
 
         Args:
             img: Image to check and click
@@ -87,7 +89,7 @@ class Auto:
 
     def wait_click(self, img, sleep_sec=0):
         """
-        Method that wait for a bouton to appear and click on it. Eventually sleep sleep_sec seconds after
+        Method that wait for a button to appear and click on it. Eventually sleep sleep_sec seconds after
 
         Args:
             img: Image to wait for and click
@@ -117,9 +119,9 @@ class Auto:
                 self._check_n_sleep(sleep_sec)
                 i += 1
         else:
-            AutoException("n is the number of time to type the key, therefore must be an int or float")
+            raise AutoException("n is the number of time to type the key, therefore must be an int or float")
 
-    def exec_win_cmd(self, cmd, sleep_sec=0):
+    def exec_cmd(self, cmd, sleep_sec=0):
         """
         Execute command on Windows OS
 
@@ -132,22 +134,22 @@ class Auto:
         Returns:
             True if return code of the command is 0, false on contrary
         """
-        rt = system("CMD /C {0}".format(cmd))
+        rt = system("{0}".format(cmd))
         self._check_n_sleep(sleep_sec)
         return rt == 0
 
     def start_android_gui(self, sleep_sec=0):
         """
-        Start Android mirroring with scrcpy if connected
-
-        Returns:
-             Boolean True if started, False on contrary
+        Start Android mirroring with scrcpy.exe if connected
 
         Kwargs:
             sleep_sec: Number of seconds to eventually sleep after the click
+
+        Returns:
+             Boolean True if started, False on contrary
         """
-        if self.android_connected:
-            return self.start_pgm("scrcpy.exe", wd="scrcpy-windows-v1.1", sleep_sec=0)
+        if self.android_number() == 1:
+            return self.start_pgm("scrcpy.exe", wd="scrcpy-windows-v1.1", sleep_sec=sleep_sec)
         else:
             return False
 
@@ -162,7 +164,7 @@ class Auto:
 
     def stop_android_gui(self):
         """
-        Stop scrcpy processes
+        Stop scrcpy.exe processes
 
         Returns:
             Boolean True if command executed correctly, False on contrary
@@ -177,16 +179,33 @@ class Auto:
             Tuple containing the Android Serial number and device type
         """
         adb_output = check_output(["scrcpy-windows-v1.1/adb.exe", "devices"]).decode()
-        return re.findall(r"\r\n([\w]*)\t([\w]*)\r\n", adb_output)
+        tup = re.findall("\n([\w]*)\t([\w]*)\r", adb_output)
+        android_arr = []
+        if tup is not None:
+            l = len(tup)
+            i = 0
+            while i < l:
+                android_arr.append({"type": tup[i][1], "num": tup[i][0]})
+                i += 1
+        return android_arr
 
     def android_connected(self):
         """
-        Check if Android connected
+        Check if an Android is connected
 
         Returns:
             True if command Android connected, False on contrary
         """
-        return len(self.android) != 0
+        return len(self.android()) != 0
+
+    def android_number(self):
+        """
+        Calculate the number of Android device connected
+
+        Returns:
+            int corresponding to the number of Android device
+        """
+        return len(self.android())
 
     def start_pgm(self, pgm, wd=None, pgm_arg=None, sleep_sec=0):
         """
@@ -208,24 +227,15 @@ class Auto:
         else:
             prefix = "cd {0} && ".format(wd)
 
-        if wd is None:
+        if pgm_arg is None:
             suffix = ""
         else:
             suffix = " {0}".format(pgm_arg)
 
-        cmd = "START /B {1}{2}".format(prefix, pgm, suffix)
-        rt = self.exec_win_cmd(cmd)
+        cmd = "{0}START /B {1}{2}".format(prefix, pgm, suffix)
+        rt = self.exec_cmd(cmd)
         self._check_n_sleep(sleep_sec)
         return rt
-
-    def android_number(self):
-        """
-        Calculate the number of Android device connected
-
-        Returns:
-            int corresponding to the number of Android device
-        """
-        return len(self.android)
 
     def check_pgm(self, pgm):
         """
@@ -238,7 +248,7 @@ class Auto:
             True if program running, false on contrary
         """
         cmd = 'tasklist /nh /fi "imagename eq {0}" | find /i "{0}" > nul'.format(pgm)
-        return self.exec_win_cmd(cmd, sleep_sec=0)
+        return self.exec_cmd(cmd, sleep_sec=0)
 
     def kill_pgm(self, pgm, sleep_sec=0):
         """
@@ -254,13 +264,13 @@ class Auto:
             True if return code of the command is 0, false on contrary
         """
         cmd = "Taskkill /IM {0} /F".format(pgm)
-        rt = self.exec_win_cmd(cmd, sleep_sec=0)
+        rt = self.exec_cmd(cmd, sleep_sec=0)
         self._check_n_sleep(sleep_sec)
         return rt
 
     def _check_n_sleep(self, s):
         """
-        Internal method tocheck s, the number of second to sleep which as to be int or float
+        Internal method to check s, the number of second to sleep which as to be int or float
 
         Args:
             s: Number of seconds
@@ -268,10 +278,18 @@ class Auto:
         if isinstance(s, (int, float)):
             sleep(s)
         else:
-            AutoException("sleep_sec KWARG is a time in to sleep after click, therefore must be an int or float")
+            raise AutoException("sleep_sec KWARG is a time in to sleep after click, therefore must be an int or float")
 
-
+"""
+########################################################################################################################
+# AutoTest as unittest.Testcase to test the developpement of the Auto class
+# test_B_Auto_init: Test the initialization of the Auto object
+# test_C_pgm: Test of the methods related to program management
+# test_D_android: Test of the methods related to Android connection and mirroring
+########################################################################################################################
+"""
 class AutoTest(unittest.TestCase):
+    """AutoTest as unittest.Testcase to test the developpement of the Auto class"""
     def setUp(self):
         """Executed before each test, nothing to do yet"""
         pass
@@ -280,7 +298,12 @@ class AutoTest(unittest.TestCase):
         """Executed after each test, nothing to do yet"""
         pass
 
-    def test_A_Auto_init(self):
+    @unittest.skip("Initialization of the test not necessary")
+    def test_A_(self):
+        """Nothing to do yet"""
+        pass
+
+    def test_B_Auto_init(self):
         """Test the init of Auto class"""
         test_automaton = Auto()
         assert test_automaton != ""
@@ -290,24 +313,26 @@ class AutoTest(unittest.TestCase):
         assert test_automaton.machine != ""
         assert test_automaton.uname != ""
 
-    def test_B_manage_pgm(self):
+    def test_C_pgm(self):
         """Test the method wrapping cmd.exe"""
         test_automaton = Auto()
         assert test_automaton.start_pgm('node.exe', sleep_sec=5) is True
         assert test_automaton.check_pgm('node.exe') is True
         assert test_automaton.kill_pgm('node.exe') is True
 
-    def test_C_android_method(self):
+    def test_D_android(self):
         """Test the method necessary to automate Android task"""
         test_automaton = Auto()
-        assert test_automaton.start_android_gui(sleep_sec=5) == True
+        assert test_automaton.start_android_gui(sleep_sec=6) == True
         assert test_automaton.check_android_gui() == True
         assert test_automaton.stop_android_gui() == True
         assert test_automaton.android_connected() == True
-        #assert test_automaton.android_number() == 1
+        assert test_automaton.android_number() == 1
 
-########################################################################################################################################
-# Start test, and produce the XML and print the errors
-###########################################################################################################################################
+"""
+########################################################################################################################
+# Start the tests of the Auto class
+########################################################################################################################
+"""
 if __name__ == '__main__':
     unittest.main()
