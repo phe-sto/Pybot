@@ -6,14 +6,16 @@
 # -> !!! Coding style is CamelCase for classes and lowercase_separated_by_underscores for methods and variables !!! <-
 ###########################################################################################################################################
 """
+import platform
+import re
+import sys
 # Import unittest in case of test automation
 import unittest
 # To start program of command
 from os import system
+from subprocess import check_output
 # Lackey library, a sikuli wrapper
 from lackey import *
-import platform
-import sys
 
 __author__ = "Christophe Brun"
 __credits__ = ["Christophe Brun", "PapIT"]
@@ -54,13 +56,11 @@ class Auto:
         self.machine = platform.machine()
         self.uname = platform.uname()
 
-
     def __repr__(self):
         """
         Description of the auto object
         """
         return "{0} automaton executed on a {1} computer".format(self.python_version, self.OS_version)
-
 
     def check_click(self, img, sleep_sec=0, after_click=None):
         """
@@ -136,7 +136,59 @@ class Auto:
         self._check_n_sleep(sleep_sec)
         return rt == 0
 
-    def start_win_pgm(self, pgm, wd=None , pgm_arg=None, sleep_sec=0):
+    def start_android_gui(self, sleep_sec=0):
+        """
+        Start Android mirroring with scrcpy if connected
+
+        Returns:
+             Boolean True if started, False on contrary
+
+        Kwargs:
+            sleep_sec: Number of seconds to eventually sleep after the click
+        """
+        if self.android_connected:
+            return self.start_pgm("scrcpy.exe", wd="scrcpy-windows-v1.1", sleep_sec=0)
+        else:
+            return False
+
+    def check_android_gui(self):
+        """
+        Check that Android mirroring with scrcpy.exe is running
+
+        Returns:
+             Boolean True if mirroring, False on contrary
+        """
+        return self.check_pgm("scrcpy.exe")
+
+    def stop_android_gui(self):
+        """
+        Stop scrcpy processes
+
+        Returns:
+            Boolean True if command executed correctly, False on contrary
+        """
+        return self.kill_pgm("scrcpy.exe")
+
+    def android(self):
+        """
+        Access connected Android device via adb.exe
+
+        Returns:
+            Tuple containing the Android Serial number and device type
+        """
+        adb_output = check_output(["scrcpy-windows-v1.1/adb.exe", "devices"]).decode()
+        return re.findall(r"\r\n([\w]*)\t([\w]*)\r\n", adb_output)
+
+    def android_connected(self):
+        """
+        Check if Android connected
+
+        Returns:
+            True if command Android connected, False on contrary
+        """
+        return len(self.android) != 0
+
+    def start_pgm(self, pgm, wd=None, pgm_arg=None, sleep_sec=0):
         """
         Start a program in background in a given directory on Windows OS
 
@@ -154,19 +206,28 @@ class Auto:
         if wd is None:
             prefix = ""
         else:
-            prefix  = "cd {0} && ".format(wd)
+            prefix = "cd {0} && ".format(wd)
 
         if wd is None:
             suffix = ""
         else:
-            suffix  = " {0}".format(pgm_arg)
+            suffix = " {0}".format(pgm_arg)
 
         cmd = "START /B {1}{2}".format(prefix, pgm, suffix)
         rt = self.exec_win_cmd(cmd)
         self._check_n_sleep(sleep_sec)
         return rt
 
-    def check_win_pgm(self, pgm):
+    def android_number(self):
+        """
+        Calculate the number of Android device connected
+
+        Returns:
+            int corresponding to the number of Android device
+        """
+        return len(self.android)
+
+    def check_pgm(self, pgm):
         """
         Check if a program is running
 
@@ -179,7 +240,7 @@ class Auto:
         cmd = 'tasklist /nh /fi "imagename eq {0}" | find /i "{0}" > nul'.format(pgm)
         return self.exec_win_cmd(cmd, sleep_sec=0)
 
-    def kill_win_pgm(self, pgm, sleep_sec=0):
+    def kill_pgm(self, pgm, sleep_sec=0):
         """
         Kill a program
 
@@ -196,7 +257,6 @@ class Auto:
         rt = self.exec_win_cmd(cmd, sleep_sec=0)
         self._check_n_sleep(sleep_sec)
         return rt
-
 
     def _check_n_sleep(self, s):
         """
@@ -233,10 +293,18 @@ class AutoTest(unittest.TestCase):
     def test_B_manage_pgm(self):
         """Test the method wrapping cmd.exe"""
         test_automaton = Auto()
-        assert test_automaton.start_win_pgm('node.exe', sleep_sec=5) is True
-        assert test_automaton.check_win_pgm('node.exe') is True
-        assert test_automaton.kill_win_pgm('node.exe') is True
+        assert test_automaton.start_pgm('node.exe', sleep_sec=5) is True
+        assert test_automaton.check_pgm('node.exe') is True
+        assert test_automaton.kill_pgm('node.exe') is True
 
+    def test_C_android_method(self):
+        """Test the method necessary to automate Android task"""
+        test_automaton = Auto()
+        assert test_automaton.start_android_gui(sleep_sec=5) == True
+        assert test_automaton.check_android_gui() == True
+        assert test_automaton.stop_android_gui() == True
+        assert test_automaton.android_connected() == True
+        #assert test_automaton.android_number() == 1
 
 ########################################################################################################################################
 # Start test, and produce the XML and print the errors
