@@ -1,7 +1,7 @@
 # Pybot
-This automation framework aims to interact with GUI (web, desktop, etc)or Android. Many tasks
-could be automated, like information harvesting or test. Script can be designed with Sikuli IDE.
-The framework then convert Sikuli project to python 3 to to take advantage of that powerful scripting language.
+This automation framework aims to interact with GUI (web, desktop, etc) from the computer, or a connected Android. Many tasks
+could be automated, like information harvesting or tests. Script can be designed with Sikuli IDE.
+The framework then convert Sikuli project to python 3 to take advantage of that powerful scripting language and the python 3 ecosystem.
 
 ## Platforms
   At the moment, for computer, only Windows platforms are supported. Android can be accessed by mirroring thanks to [scrpy](https://github.com/Genymobile/scrcpy) embedded in this framework
@@ -13,12 +13,12 @@ The framework then convert Sikuli project to python 3 to to take advantage of th
   Other methods are available from the Auto class extract information from the GUI.
 
 ## Dependencies
-  [Python 3.6](https://www.python.org/downloads/),the lackey and virtualenv pip packages, only python3 Sikuli wrapper.
+  [Python 3.6](https://www.python.org/downloads/),the lackey (the only python3 Sikuli wrapper) and virtualenv pip packages.
   Sikuli method name are named like built-in or classical python method like `type()`. lackey renamed the original method an _,
-  `type()` becomes `type_()`. For the same reason is also depend on the pip package virtualenv, cause it is highly recommended to run this library out of classical pyrthon.
+  `type()` becomes `type_()`. For the same reason it also depend on the pip package virtualenv, cause it is highly recommended to run this library out of classical python.
 
 ### Note
-  The all purpose is to use to possibility to script GUI element it is much more convient to use an IDE like [Sikuli IDE](http://www.sikuli.org/downloadrc3.html) to initiate scripts.
+  The all purpose is to use to possibility to script GUI elements, therefore it is much more convenient to use an IDE like [Sikuli IDE](http://www.sikuli.org/downloadrc3.html) to initiate scripts.
   Sikuli is java based, therefore you need [Java](https://www.java.com/fr/download/). So they are not dependencies but...
 
 ## Contact
