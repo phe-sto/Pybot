@@ -322,7 +322,7 @@ class Pybot:
 
 """
 ########################################################################################################################
-# PybotTest as unittest.Testcase to test the developpement of the Pybot class
+# PybotTest as unittest.Testcase to test the development of the Pybot class
 # test_B_Pybot_init: Test the initialization of the Pybot object
 # test_C_pgm: Test of the methods related to program management
 # test_D_android: Test of the methods related to Android connection and mirroring
