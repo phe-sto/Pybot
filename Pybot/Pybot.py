@@ -1,6 +1,6 @@
 """
 ########################################################################################################################
-# Auto class can be used as Jython source to be used in sikuli IDE, not pure python or python3
+# Pybot class can be used as Jython source to be used in sikuli IDE, not pure python or python3
 # Initialize the script by importing the required libraries for test (a.k.a unittest), subprocess and system to using
 # Windows commands
 # Lackey package provide a wrapper arround Sikuli
@@ -35,22 +35,22 @@ __status__ = "Development"
 """
 
 
-class AutoException(Exception):
+class PybotException(Exception):
     """Automation exception"""
     pass
 
 
-class Auto:
+class Pybot:
     """
     Something to automate on a computer a task, a test, etc"
     """
 
     def __init__(self):
         """
-        Constructor of the Auto class
+        Constructor of the Pybot class
         """
         if platform.system() != "Windows":
-            raise AutoException("Auto class only for Windows platform at the moment")
+            raise PybotException("Pybot class only for Windows platform at the moment")
         self.python_version = sys.version
         self.OS_type = platform.system()
         self.OS_version = platform.platform()
@@ -59,7 +59,7 @@ class Auto:
 
     def __repr__(self):
         """
-        Description of the auto object
+        Description of the Pybot object
         """
         return "{0} automaton executed on a {1} computer".format(self.python_version, self.OS_version)
 
@@ -111,6 +111,10 @@ class Auto:
 
         Kwargs:
             sleep_sec: Number of seconds of seconds to eventually sleep after the click
+
+        Examples:
+            test_automaton = Pybot()
+            test_automaton.type_n_time(5, Key.11)
         """
         if isinstance(n, (int, float)):
             i = 0
@@ -119,7 +123,7 @@ class Auto:
                 self._check_n_sleep(sleep_sec)
                 i += 1
         else:
-            raise AutoException("n is the number of time to type the key, therefore must be an int or float")
+            raise PybotException("n is the number of time to type the key, therefore must be an int or float")
 
     def exec_cmd(self, cmd, sleep_sec=0):
         """
@@ -133,6 +137,10 @@ class Auto:
 
         Returns:
             True if return code of the command is 0, false on contrary
+
+        Examples:
+            test_automaton = Pybot()
+            test_automaton.exec_cmd("DIR")
         """
         rt = system("{0}".format(cmd))
         self._check_n_sleep(sleep_sec)
@@ -221,6 +229,10 @@ class Auto:
 
         Returns:
             True if return code of the command is 0, false on contrary
+
+        Examples:
+            test_automaton = Pybot()
+            test_automaton.start_pgm('node.exe', wd='server', sleep_sec=5)
         """
         if wd is None:
             prefix = ""
@@ -246,6 +258,10 @@ class Auto:
 
         Returns:
             True if program running, false on contrary
+
+        Examples:
+            test_automaton = Pybot()
+            test_automaton.check_pgm("Firefox.exe")
         """
         cmd = 'tasklist /nh /fi "imagename eq {0}" | find /i "{0}" > nul'.format(pgm)
         return self.exec_cmd(cmd, sleep_sec=0)
@@ -278,18 +294,43 @@ class Auto:
         if isinstance(s, (int, float)):
             sleep(s)
         else:
-            raise AutoException("sleep_sec KWARG is a time in to sleep after click, therefore must be an int or float")
+            raise PybotException("sleep_sec KWARG is a time in to sleep after click, therefore must be an int or float")
 
+    def start_web(self, url, sleep_sec=0):
+        """
+        Start a website on the default browser and full screen it on Windows OS
+
+        Args:
+            url: URL of the website
+
+        Kwargs:
+            sleep_sec: Number of seconds of seconds to eventually sleep after the click
+
+        Returns:
+            True if return code of the command is 0, false on contrary
+
+        Examples:
+            test_automaton = Pybot()
+            test_automaton.start_web("https://papit.fr")
+        """
+        cmd = "START {0}".format(url)
+        rt = self.exec_cmd(cmd)
+        self._check_n_sleep(sleep_sec)
+        type(Key.F11)
+        return rt
 """
 ########################################################################################################################
-# AutoTest as unittest.Testcase to test the developpement of the Auto class
-# test_B_Auto_init: Test the initialization of the Auto object
+# PybotTest as unittest.Testcase to test the developpement of the Pybot class
+# test_B_Pybot_init: Test the initialization of the Pybot object
 # test_C_pgm: Test of the methods related to program management
 # test_D_android: Test of the methods related to Android connection and mirroring
+# test_E_web: Test the opening of a website in the default browser
 ########################################################################################################################
 """
-class AutoTest(unittest.TestCase):
-    """AutoTest as unittest.Testcase to test the developpement of the Auto class"""
+
+
+class PybotTest(unittest.TestCase):
+    """PybotTest as unittest.Testcase to test the development of the Pybot class"""
     def setUp(self):
         """Executed before each test, nothing to do yet"""
         pass
@@ -303,9 +344,9 @@ class AutoTest(unittest.TestCase):
         """Nothing to do yet"""
         pass
 
-    def test_B_Auto_init(self):
-        """Test the init of Auto class"""
-        test_automaton = Auto()
+    def test_B_Pybot_init(self):
+        """Test the init of Pybot class"""
+        test_automaton = Pybot()
         assert test_automaton != ""
         assert test_automaton.python_version != ""
         assert test_automaton.OS_type != ""
@@ -315,23 +356,30 @@ class AutoTest(unittest.TestCase):
 
     def test_C_pgm(self):
         """Test the method wrapping cmd.exe"""
-        test_automaton = Auto()
+        test_automaton = Pybot()
         assert test_automaton.start_pgm('node.exe', sleep_sec=5) is True
         assert test_automaton.check_pgm('node.exe') is True
         assert test_automaton.kill_pgm('node.exe') is True
 
     def test_D_android(self):
         """Test the method necessary to automate Android task"""
-        test_automaton = Auto()
+        test_automaton = Pybot()
         assert test_automaton.start_android_gui(sleep_sec=6) == True
         assert test_automaton.check_android_gui() == True
         assert test_automaton.stop_android_gui() == True
         assert test_automaton.android_connected() == True
         assert test_automaton.android_number() == 1
 
+    def test_E_web(self):
+        """Test the opening of a website in the default browser"""
+        test_automaton = Pybot()
+        test_automaton.start_web("https://papit.fr",sleep_sec=5)
+        assert test_automaton.kill_pgm('Firefox.exe') is True
+
+
 """
 ########################################################################################################################
-# Start the tests of the Auto class
+# Start the tests of the Pybot class
 ########################################################################################################################
 """
 if __name__ == '__main__':

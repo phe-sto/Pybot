@@ -10,7 +10,7 @@ The framework then convert Sikuli project to python 3 to take advantage of that 
   Sikuli IDE is a extremely powerful tool to script automation through any GUI, web browser, android, etc... The only python3 compliant wrapper around Sikuli is lackey.
   This then use lackey and other libraries to be complete the laking feature of Sikuli.
   Unlike pure Sikuli that use JVM and therefore Jython to access some low level API, this framework access platform API via (more) robust python method.
-  Other methods are available from the Auto class extract information from the GUI.
+  Other methods are available from the Pybot class extract information from the GUI.
 
 ## Dependencies
   [Python 3.6](https://www.python.org/downloads/),the lackey (the only python3 Sikuli wrapper) and virtualenv pip packages.
