@@ -318,6 +318,8 @@ class Pybot:
         self._check_n_sleep(sleep_sec)
         type(Key.F11)
         return rt
+
+
 """
 ########################################################################################################################
 # PybotTest as unittest.Testcase to test the developpement of the Pybot class
