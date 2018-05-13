@@ -1,15 +1,15 @@
-from setuptools import setup
 import os
+from setuptools import setup
 
 name = 'Pybot'
 
 here = os.path.abspath(os.path.dirname(__file__))
 about = {}
 with open(os.path.join(here, name, '__init__.py'), 'r', encoding='utf-8') as f:
-      exec(f.read(), about)
+    exec(f.read(), about)
 
 with open("README.md", 'r', encoding='utf-8') as f:
-      readme = f.read()
+    readme = f.read()
 
 setup(name=name,
       version=about['__version__'],
@@ -23,5 +23,5 @@ setup(name=name,
       include_package_data=True,
       python_requires=">=3.6",
       zip_safe=False,
-      install_requires=['pytest', 'pytest-html', 'doxypypy', 'lackey'],
+      install_requires=['pytest', 'pytest-html', 'doxypypy', 'lackey', 'isort', 'autopep8'],
       )

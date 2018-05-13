@@ -12,11 +12,11 @@ import re
 # Import unittest in case of test automation
 import unittest
 # To start program of command
-from os import system
+from os import system, path, listdir
 from subprocess import check_output
 
-# Lackey library, a sikuli wrapper
 from lackey import *
+from shutil import copy
 
 __author__ = "Christophe Brun"
 __credits__ = ["Christophe Brun", "PapIT"]
@@ -50,7 +50,8 @@ class Pybot:
         Constructor of the Pybot class
         """
         if platform.system() != "Windows":
-            raise PybotException("Pybot class only for Windows platform at the moment")
+            raise PybotException(
+                "Pybot class only for Windows platform at the moment")
         self.python_version = sys.version
         self.OS_type = platform.system()
         self.OS_version = platform.platform()
@@ -61,7 +62,8 @@ class Pybot:
         """
         Description of the Pybot object
         """
-        return "{0} automaton executed on a {1} computer".format(self.python_version, self.OS_version)
+        return "{0} automaton executed on a {1} computer".format(
+            self.python_version, self.OS_version)
 
     def check_click(self, img, sleep_sec=0, after_click=None):
         """
@@ -112,6 +114,9 @@ class Pybot:
         Kwargs:
             sleep_sec: Number of seconds of seconds to eventually sleep after the click
 
+        Raises:
+            PybotException
+
         Examples:
             test_automaton = Pybot()
             test_automaton.type_n_time(5, Key.11)
@@ -123,7 +128,8 @@ class Pybot:
                 self._check_n_sleep(sleep_sec)
                 i += 1
         else:
-            raise PybotException("n is the number of time to type the key, therefore must be an int or float")
+            raise PybotException(
+                "n is the number of time to type the key, therefore must be an int or float")
 
     def exec_cmd(self, cmd, sleep_sec=0):
         """
@@ -157,7 +163,8 @@ class Pybot:
              Boolean True if started, False on contrary
         """
         if self.android_number() == 1:
-            return self.start_pgm("scrcpy.exe", wd="scrcpy-windows-v1.1", sleep_sec=sleep_sec)
+            return self.start_pgm(
+                "scrcpy.exe", wd="scrcpy-windows-v1.1", sleep_sec=sleep_sec)
         else:
             return False
 
@@ -186,7 +193,8 @@ class Pybot:
         Returns:
             Tuple containing the Android Serial number and device type
         """
-        adb_output = check_output(["scrcpy-windows-v1.1/adb.exe", "devices"]).decode()
+        adb_output = check_output(
+            ["scrcpy-windows-v1.1/adb.exe", "devices"]).decode()
         tup = re.findall("\n([\w]*)\t([\w]*)\r", adb_output)
         android_arr = []
         if tup is not None:
@@ -263,7 +271,8 @@ class Pybot:
             test_automaton = Pybot()
             test_automaton.check_pgm("Firefox.exe")
         """
-        cmd = 'tasklist /nh /fi "imagename eq {0}" | find /i "{0}" > nul'.format(pgm)
+        cmd = 'tasklist /nh /fi "imagename eq {0}" | find /i "{0}" > nul'.format(
+            pgm)
         return self.exec_cmd(cmd, sleep_sec=0)
 
     def kill_pgm(self, pgm, sleep_sec=0):
@@ -290,15 +299,19 @@ class Pybot:
 
         Args:
             s: Number of seconds
+
+        Raises:
+            PybotException
         """
         if isinstance(s, (int, float)):
             sleep(s)
         else:
-            raise PybotException("sleep_sec KWARG is a time in to sleep after click, therefore must be an int or float")
+            raise PybotException(
+                "sleep_sec KWARG is a time in to sleep after click, therefore must be an int or float")
 
     def start_web(self, url, sleep_sec=0):
         """
-        Start a website on the default browser and full screen it on Windows OS
+        Start a website on the default browser, wait 5 seconds for it to open and full screen it on Windows OS
 
         Args:
             url: URL of the website
@@ -315,9 +328,39 @@ class Pybot:
         """
         cmd = "START {0}".format(url)
         rt = self.exec_cmd(cmd, sleep_sec=5)
-        self._check_n_sleep(sleep_sec)
+        sleep(sleep_sec)
         type(Key.F11)
         return rt
+
+    def export_sikuli_class(self, project_name):
+        """
+        Export a sikuli project class to the Pybot package on Windows OS
+
+        Args:
+            project_name: Name of the project to export
+
+        Raises:
+            PybotException
+
+        Examples:
+        """
+        directory_name = "sikuli_project/{0}.sikuli".format(project_name)
+        file_name = "{0}.py".format(project_name)
+        if path.isdir(directory_name) is False:
+            raise PybotException(
+                "Project {0} does not exists in the sikuli_project directory".format(project_name))
+
+        file_to_export = open(os.path.join(directory_name, file_name), mode="r", encoding="utf-8")
+        data_to_export = "".join(["from lackey import *", file_to_export.read()])
+        file_to_export.close()
+        file_to_write = open("Pybot/{0}".format(file_name), mode="w", encoding="utf-8")
+        file_to_write.write(data_to_export)
+        file_to_write.close()
+        project_files = os.listdir(directory_name)
+        for file_name in project_files:
+            if file_name.endswith(".png"):
+                img = os.path.join(directory_name, file_name)
+                copy(img, "./")
 
 
 """
@@ -333,6 +376,7 @@ class Pybot:
 
 class PybotTest(unittest.TestCase):
     """PybotTest as unittest.Testcase to test the development of the Pybot class"""
+
     def setUp(self):
         """Executed before each test, nothing to do yet"""
         pass
@@ -375,8 +419,11 @@ class PybotTest(unittest.TestCase):
     def test_E_web(self):
         """Test the opening of a website in the default browser"""
         test_automaton = Pybot()
-        test_automaton.start_web("https://papit.fr",sleep_sec=5)
+        test_automaton.start_web("https://papit.fr", sleep_sec=5)
         assert test_automaton.kill_pgm('Firefox.exe') is True
+
+    def test_F_export_sikuli(self):
+        """Test the export of a sikuli project to the Pybot python packge"""
 
 
 """
