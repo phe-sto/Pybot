@@ -314,7 +314,7 @@ class Pybot:
             test_automaton.start_web("https://papit.fr")
         """
         cmd = "START {0}".format(url)
-        rt = self.exec_cmd(cmd)
+        rt = self.exec_cmd(cmd, sleep_sec=5)
         self._check_n_sleep(sleep_sec)
         type(Key.F11)
         return rt
