@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f750e08f-99d4-400d-8e76-2c13fc8ea360" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pybot/Pybot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pybot/Pybot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/DESCRIPTION.rst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/RECORD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/WHEEL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/top_level.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/Pybot/TahomaBee.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Pybot/TahomaBee.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,8 +21,8 @@
       <file leaf-file-name="Pybot.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Pybot/Pybot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443">
-              <caret line="370" column="31" selection-start-line="370" selection-start-column="31" selection-end-line="370" selection-end-column="31" />
+            <state relative-caret-position="273">
+              <caret line="372" lean-forward="true" selection-start-line="372" selection-end-line="372" />
               <folding>
                 <element signature="e#673#682#0" expanded="true" />
               </folding>
@@ -41,8 +45,8 @@
       <file leaf-file-name="TahomaBee.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Pybot/TahomaBee.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1152">
-              <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
+            <state relative-caret-position="465">
+              <caret line="238" selection-start-line="238" selection-end-line="238" />
             </state>
           </provider>
         </entry>
@@ -169,22 +173,6 @@
               <item name="Auto" type="b2602c69:ProjectViewProjectNode" />
               <item name="Auto" type="462c0819:PsiDirectoryNode" />
               <item name="Pybot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Auto" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Auto" type="462c0819:PsiDirectoryNode" />
-              <item name="sikuli_project" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Auto" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Auto" type="462c0819:PsiDirectoryNode" />
-              <item name="sikuli_project" type="462c0819:PsiDirectoryNode" />
-              <item name="TahomaBee.sikuli" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Auto" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Auto" type="462c0819:PsiDirectoryNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Auto" type="b2602c69:ProjectViewProjectNode" />
@@ -383,7 +371,14 @@
       <option name="project" value="LOCAL" />
       <updated>1526409487908</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="img exported in the img dir with a regex modifying the address">
+      <created>1526417823031</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1526417823031</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -393,7 +388,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1376" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24338235" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -425,7 +419,8 @@
     <MESSAGE value="Export sikuli project class" />
     <MESSAGE value="Single batch for all functions" />
     <MESSAGE value="export_sikuli_class with return&#10;Pybot.bat&#10;add venv" />
-    <option name="LAST_COMMIT_MESSAGE" value="export_sikuli_class with return&#10;Pybot.bat&#10;add venv" />
+    <MESSAGE value="img exported in the img dir with a regex modifying the address" />
+    <option name="LAST_COMMIT_MESSAGE" value="img exported in the img dir with a regex modifying the address" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Pybot/Pybot.py">
@@ -638,16 +633,6 @@
     <entry file="file://$PROJECT_DIR$/Auto.sikuli/Auto.py" />
     <entry file="file://$PROJECT_DIR$/Auto/README.md" />
     <entry file="file://$PROJECT_DIR$/Auto/Auto.py" />
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="204">
-            <caret line="12" column="44" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Temp/TahomaBee.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
@@ -689,10 +674,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Pybot/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Pybot/TahomaBee.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1152">
-          <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
+        <state relative-caret-position="465">
+          <caret line="238" selection-start-line="238" selection-end-line="238" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="204">
+            <caret line="12" column="44" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
@@ -706,17 +708,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Pybot/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Pybot/Pybot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="370" column="31" selection-start-line="370" selection-start-column="31" selection-end-line="370" selection-end-column="31" />
+        <state relative-caret-position="273">
+          <caret line="372" lean-forward="true" selection-start-line="372" selection-end-line="372" />
           <folding>
             <element signature="e#673#682#0" expanded="true" />
           </folding>
