@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f750e08f-99d4-400d-8e76-2c13fc8ea360" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/DESCRIPTION.rst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/RECORD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/WHEEL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/metadata.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/opencv_python-3.4.0.12.dist-info/top_level.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/Pybot/TahomaBee.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Pybot/TahomaBee.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/Pybot-0.1.0.dist-info/RECORD" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Pybot-0.1.0.dist-info/RECORD" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/Pybot/Pybot.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/Pybot/Pybot.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,8 +18,8 @@
       <file leaf-file-name="Pybot.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Pybot/Pybot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="372" lean-forward="true" selection-start-line="372" selection-end-line="372" />
+            <state relative-caret-position="-286">
+              <caret line="346" selection-start-line="346" selection-end-line="346" />
               <folding>
                 <element signature="e#673#682#0" expanded="true" />
               </folding>
@@ -38,15 +35,6 @@
               <folding>
                 <element signature="e#60#70#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TahomaBee.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Pybot/TahomaBee.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="238" selection-start-line="238" selection-end-line="238" />
             </state>
           </provider>
         </entry>
@@ -148,7 +136,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-8" />
     <option name="width" value="1340" />
     <option name="height" value="688" />
@@ -173,6 +161,17 @@
               <item name="Auto" type="b2602c69:ProjectViewProjectNode" />
               <item name="Auto" type="462c0819:PsiDirectoryNode" />
               <item name="Pybot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Auto" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Auto" type="462c0819:PsiDirectoryNode" />
+              <item name="sikuli_project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Auto" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Auto" type="462c0819:PsiDirectoryNode" />
+              <item name="sikuli_project" type="462c0819:PsiDirectoryNode" />
+              <item name="TahomaBee.sikuli" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Auto" type="b2602c69:ProjectViewProjectNode" />
@@ -378,7 +377,14 @@
       <option name="project" value="LOCAL" />
       <updated>1526417823031</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;Pybot/Pybot.py&#10;#&#9;venv/Lib/site-packages/Pybot-0.1.0.dist-info/RECORD&#10;#&#9;venv/Lib/site-packages/Pybot/TahomaBee.py">
+      <created>1526418754061</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1526418754061</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -420,7 +426,8 @@
     <MESSAGE value="Single batch for all functions" />
     <MESSAGE value="export_sikuli_class with return&#10;Pybot.bat&#10;add venv" />
     <MESSAGE value="img exported in the img dir with a regex modifying the address" />
-    <option name="LAST_COMMIT_MESSAGE" value="img exported in the img dir with a regex modifying the address" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;Pybot/Pybot.py&#10;#&#9;venv/Lib/site-packages/Pybot-0.1.0.dist-info/RECORD&#10;#&#9;venv/Lib/site-packages/Pybot/TahomaBee.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;Pybot/Pybot.py&#10;#&#9;venv/Lib/site-packages/Pybot-0.1.0.dist-info/RECORD&#10;#&#9;venv/Lib/site-packages/Pybot/TahomaBee.py" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Pybot/Pybot.py">
@@ -710,8 +717,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Pybot/Pybot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="372" lean-forward="true" selection-start-line="372" selection-end-line="372" />
+        <state relative-caret-position="-286">
+          <caret line="346" selection-start-line="346" selection-end-line="346" />
           <folding>
             <element signature="e#673#682#0" expanded="true" />
           </folding>
