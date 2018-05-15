@@ -11,14 +11,18 @@ if "%function%"=="setup" (
     call :setup
 )
 if "%function%"=="export" (
-    if "%arg1%"=="" (
+    if "%arg2%"=="" (
         echo Please provide the sikuli project to export as second argument
     ) else (
-        python export_sikuli_class.py %arg1%
-        isort Pybot/%arg1%.py
-        autopep8 --in-place Pybot/%arg1%.py
-        python venv/Tools/scripts/2to3.py -w Pybot/%arg1%.py
-        call :setup
+        if "%arg1%"=="class" (
+            python export_sikuli_class.py %arg2%
+            python venv/Tools/scripts/2to3.py -w Pybot/%arg2%.py
+            isort Pybot/%arg2%.py
+            autopep8 --in-place Pybot/%arg2%.py
+            call :setup
+        ) else (
+            echo Please provide specify class or script as second argument
+        )
     )
 )
 if "%function%"=="test" (

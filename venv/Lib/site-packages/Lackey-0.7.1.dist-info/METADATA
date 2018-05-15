@@ -1,0 +1,32 @@
+Metadata-Version: 2.0
+Name: Lackey
+Version: 0.7.1
+Summary: A Sikuli script implementation in Python
+Home-page: https://github.com/glitchassassin/lackey
+Author: Jon Winsley
+Author-email: jon.winsley@gmail.com
+License: MIT
+Keywords: automation testing sikuli
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Utilities
+Classifier: Topic :: Desktop Environment
+Requires-Dist: requests
+Requires-Dist: pillow
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: keyboard
+Requires-Dist: pyperclip
+
+Lackey is an implementation of Sikuli script, using image recognition
+to control complex and non-OS-standard business applications. Potential applications include 
+automating tedious workflows, routine user interface testing, etc.
+
