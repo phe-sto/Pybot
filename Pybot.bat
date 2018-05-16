@@ -16,7 +16,7 @@ if "%function%"=="export" (
     ) else (
         if "%arg1%"=="class" (
             python export_sikuli_class.py %arg2%
-            python venv/Tools/scripts/2to3.py -w Pybot/%arg2%.py
+            python script/2to3.py -w Pybot/%arg2%.py
             isort Pybot/%arg2%.py
             autopep8 --in-place Pybot/%arg2%.py
             call :setup
@@ -31,6 +31,7 @@ if "%function%"=="test" (
 pause
 exit /B 0
 :setup
+    python setup build
     python setup.py bdist_wheel
     pip uninstall --yes Pybot
     pip install dist/Pybot-0.1.0-py3-none-any.whl --upgrade
