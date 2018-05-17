@@ -18,6 +18,7 @@ from os import system, path, makedirs
 from shutil import copy, rmtree
 from subprocess import check_output
 
+import easygui
 from lackey import *
 
 __author__ = "Christophe Brun"
@@ -76,6 +77,18 @@ class Pybot:
         request = "INSERT INTO screen VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
         db.execute(request, (self.computer, self.screen_width, self.screen_height,))
         db.commit()
+        request = 'SELECT COUNT (*) FROM (SELECT node, width, height FROM screen WHERE node = ? GROUP BY node, width, height);'
+        cur = db.cursor()
+        cur.execute(request, (self.computer,))
+        self.num_screen = cur.fetchone()[0]
+        if self.num_screen > 1:
+            if easygui.ynbox(
+                    'Various screens have been used by this computer.\nIt can mess with Sikuli image recognition.\nShall I continue?',
+                    'Display warning', ('Yes', 'No')):
+                pass
+            else:
+                sys.exit(0)
+        cur.close()
         db.close()
 
     def __repr__(self):
@@ -94,7 +107,6 @@ class Pybot:
         """
         rmtree(self.database_directory)
         return path.isdir(self.database_directory) is False
-
 
     def check_click(self, img, sleep_sec=0, after_click=None):
         """
@@ -501,11 +513,11 @@ class PybotTest(unittest.TestCase):
         test_automaton = Pybot()
         assert test_automaton.export_sikuli_script("tahomaBee") is True
 
+    @unittest.skip("In case we need the base for other tests")
     def test_H_script_sikuli(self):
         """Test the cache"""
         test_automaton = Pybot()
         assert test_automaton.purge_cache() is True
-
 
 
 """

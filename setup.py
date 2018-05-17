@@ -23,5 +23,5 @@ setup(name=name,
       include_package_data=True,
       python_requires=">=3.6",
       zip_safe=False,
-      install_requires=['pytest', 'pytest-html', 'doxypypy', 'lackey', 'isort', 'autopep8', 'wheel'],
+      install_requires=['pytest', 'pytest-html', 'doxypypy', 'lackey', 'isort', 'autopep8', 'wheel', 'easygui'],
       )
