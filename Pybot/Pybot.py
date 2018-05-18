@@ -12,12 +12,14 @@ import re
 import sqlite3
 # Import unittest in case of test automation
 import unittest
+from datetime import datetime
 # To start program of command
 from os import system, path, makedirs
-from shutil import copy, rmtree
+from shutil import copy, rmtree, move
 from subprocess import check_output
 
 import easygui
+from PIL import Image
 from lackey import *
 
 __author__ = "Christophe Brun"
@@ -35,6 +37,13 @@ __status__ = "Development"
 # Interpretation of GUI, access to windows system commands
 ########################################################################################################################
 """
+
+IMG_FOLDER = "img/"
+IMAGE_EXT = ".png"
+SQLITE3_EXT = "sqlite3"
+SQLITE3_DATABASE = "pybot.sqlite3"
+SCRCPY_FOLDER = "scrcpy-windows-v1.1"
+SCRCPY_EXE = "scrcpy.exe"
 
 
 class PybotException(Exception):
@@ -66,12 +75,12 @@ class Pybot:
         self.screen = Screen()
         self.screen_width = self.screen.getBounds()[2]
         self.screen_height = self.screen.getBounds()[3]
+        self.screen_bounds = self.screen.getBounds()
         self.num_screen = self.screen.getNumberScreens()
-        self.database_directory = "sqlite3"
-        self.database = "Pybot.sqlite3"
+        self.database_directory = SQLITE3_EXT
+        self.database = SQLITE3_DATABASE
         self.cache = cache
-        if self.cache is True:
-            self._cache()
+        self._cache_automaton_screen()
 
     def __repr__(self):
         """
@@ -80,32 +89,33 @@ class Pybot:
         return "{0} automaton executed on {1}, a {2} computer".format(
             self.python_version, self.computer, self.OS_version)
 
-    def _cache(self):
-        """Caching method called if cache kwarg of the constructor is True (default)"""
-        makedirs(self.database_directory, exist_ok=True)
-        db = sqlite3.connect(path.join(self.database_directory, self.database))
-        db.execute(
-            'CREATE TABLE IF NOT EXISTS computer (node TEXT PRIMARY KEY, os_type TEXT, os_version TEXT, ts TIMESTAMP);')
-        request = "INSERT OR REPLACE INTO computer VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
-        db.execute(request, (self.computer, self.OS_type, self.OS_version,))
-        db.execute(
-            'CREATE TABLE IF NOT EXISTS screen (node TEXT, width INT, height INT, ts TIMESTAMP);')
-        request = "INSERT INTO screen VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
-        db.execute(request, (self.computer, self.screen_width, self.screen_height,))
-        db.commit()
-        request = 'SELECT COUNT (*) FROM (SELECT node, width, height FROM screen WHERE node = ? GROUP BY node, width, height);'
-        cur = db.cursor()
-        cur.execute(request, (self.computer,))
-        res = cur.fetchone()[0]
-        if res > 1:
-            if easygui.ynbox(
-                    'Various screens have been used by this computer.\nIt can mess with Sikuli image recognition.\nShall I continue?',
-                    'Display warning', ('Yes', 'No')):
-                pass
-            else:
-                sys.exit(0)
-        cur.close()
-        db.close()
+    def _cache_automaton_screen(self):
+        """Caching the computer and screen called if cache kwarg of the constructor is True (default)"""
+        if self.cache is True:
+            makedirs(self.database_directory, exist_ok=True)
+            db = sqlite3.connect(path.join(self.database_directory, self.database))
+            db.execute(
+                'CREATE TABLE IF NOT EXISTS computer (node TEXT PRIMARY KEY, os_type TEXT, os_version TEXT, ts TIMESTAMP);')
+            request = "INSERT OR REPLACE INTO computer VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
+            db.execute(request, (self.computer, self.OS_type, self.OS_version,))
+            db.execute(
+                'CREATE TABLE IF NOT EXISTS screen (node TEXT, width INT, height INT, ts TIMESTAMP);')
+            request = "INSERT INTO screen VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
+            db.execute(request, (self.computer, self.screen_width, self.screen_height,))
+            db.commit()
+            request = 'SELECT COUNT (*) FROM (SELECT node, width, height FROM screen WHERE node = ? GROUP BY node, width, height);'
+            cur = db.cursor()
+            cur.execute(request, (self.computer,))
+            res = cur.fetchone()[0]
+            if res > 1:
+                if easygui.ynbox(
+                        'Various screens have been used by this computer.\nIt can mess with Sikuli image recognition.\nShall I continue?',
+                        'Display warning', ('Yes', 'No')):
+                    pass
+                else:
+                    sys.exit(0)
+            cur.close()
+            db.close()
 
     def purge_cache(self):
         """
@@ -117,15 +127,29 @@ class Pybot:
         rmtree(self.database_directory)
         return path.isdir(self.database_directory) is False
 
-    def screenshot(self):
+    def screenshot(self, bounds=None):
         """
-        Deleting database
+        Taking a screenshot, default is all the screen
 
         Returns:
-            True if cache is clear, False on contrary
+            True if image exist in image folder
         """
-        rmtree(self.database_directory)
-        return path.isdir(self.database_directory) is False
+        if bounds is None:
+            b = self.screen_bounds
+        else:
+            if isinstance(bounds, tuple) and len(bounds) == 4 * self.num_screen:
+                b = bounds
+            else:
+                raise PybotException(
+                    "Bound arg has to be a tuple with length of 4 multiply by the number of screen(s)")
+        data = self.screen.capture(b)
+        file_name = str(datetime.now().timestamp()).replace('.', '')
+        file_name = "".join([file_name[2:15], IMAGE_EXT])
+        img = Image.fromarray(data)
+        img.save(file_name)
+        move(file_name, IMG_FOLDER)
+        del img
+        return path.isfile(path.join(IMG_FOLDER + file_name))
 
     def check_click(self, img, sleep_sec=0, after_click=None):
         """
@@ -216,7 +240,7 @@ class Pybot:
 
     def start_android_gui(self, sleep_sec=0):
         """
-        Start Android mirroring with scrcpy.exe if connected
+        Start Android mirroring with SCRCPY_EXE if connected
 
         Kwargs:
             sleep_sec: Number of seconds to eventually sleep after the click
@@ -226,27 +250,27 @@ class Pybot:
         """
         if self.android_number() == 1:
             return self.start_pgm(
-                "scrcpy.exe", wd="scrcpy-windows-v1.1", sleep_sec=sleep_sec)
+                SCRCPY_EXE, wd=SCRCPY_FOLDER, sleep_sec=sleep_sec)
         else:
             return False
 
     def check_android_gui(self):
         """
-        Check that Android mirroring with scrcpy.exe is running
+        Check that Android mirroring with SCRCPY_EXE is running
 
         Returns:
              Boolean True if mirroring, False on contrary
         """
-        return self.check_pgm("scrcpy.exe")
+        return self.check_pgm(SCRCPY_EXE)
 
     def stop_android_gui(self):
         """
-        Stop scrcpy.exe processes
+        Stop SCRCPY_EXE processes
 
         Returns:
             Boolean True if command executed correctly, False on contrary
         """
-        return self.kill_pgm("scrcpy.exe")
+        return self.kill_pgm(SCRCPY_EXE)
 
     def android(self):
         """
@@ -256,7 +280,7 @@ class Pybot:
             Tuple containing the Android Serial number and device type
         """
         adb_output = check_output(
-            ["scrcpy-windows-v1.1/adb.exe", "devices"]).decode()
+            [path.join(SCRCPY_FOLDER, "adb.exe"), "devices"]).decode()
         tup = re.findall("\n([\w]*)\t([\w]*)\r", adb_output)
         android_arr = []
         if tup is not None:
@@ -456,9 +480,9 @@ class Pybot:
         file_to_write.close()
         project_files = os.listdir(directory_name)
         for file_name in project_files:
-            if file_name.endswith(".png"):
+            if file_name.endswith(IMAGE_EXT):
                 img = path.join(directory_name, file_name)
-                copy(img, "img/")
+                copy(img, IMG_FOLDER)
         return path.isfile(new_file)
 
 
@@ -539,6 +563,11 @@ class PybotTest(unittest.TestCase):
         assert test_automaton.purge_cache() is True
         test_automaton = Pybot(cache=False)
         assert test_automaton.purge_cache() is True
+
+    def test_I_screenshot(self):
+        """Test the screenshot method"""
+        test_automaton = Pybot()
+        assert test_automaton.screenshot() is True
 
 
 """
