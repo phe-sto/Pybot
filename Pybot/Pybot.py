@@ -117,6 +117,17 @@ class Pybot:
             cur.close()
             db.close()
 
+    def _cache_screenshot(self, file_name):
+        """Caching the the name of the screenshot image"""
+        if self.cache is True:
+            db = sqlite3.connect(path.join(self.database_directory, self.database))
+            db.execute(
+                'CREATE TABLE IF NOT EXISTS screenshot (node TEXT PRIMARY KEY, image TEXT, ts TIMESTAMP);')
+            request = "INSERT OR REPLACE INTO screenshot VALUES(?, ?, DATETIME('now', 'localtime'));"
+            db.execute(request, (self.computer, file_name,))
+            db.commit()
+            db.close()
+
     def purge_cache(self):
         """
         Deleting database
@@ -149,6 +160,7 @@ class Pybot:
         img.save(file_name)
         move(file_name, IMG_FOLDER)
         del img
+        self._cache_screenshot(file_name)
         return path.isfile(path.join(IMG_FOLDER + file_name))
 
     def check_click(self, img, sleep_sec=0, after_click=None):
