@@ -8,7 +8,6 @@
 # -> !!! Coding style is CamelCase for classes and lowercase_separated_by_underscores for methods and variables !!! <-
 ########################################################################################################################
 """
-import ctypes
 import re
 import sqlite3
 # Import unittest in case of test automation
@@ -48,9 +47,12 @@ class Pybot:
     Something to automate on a computer a task, a test, etc"
     """
 
-    def __init__(self):
+    def __init__(self, cache=True):
         """
         Constructor of the Pybot class
+
+        Kwargs:
+            cache: Call a caching method if True, which is the default value
         """
         if platform.system() != "Windows":
             raise PybotException(
@@ -61,11 +63,25 @@ class Pybot:
         self.machine = platform.machine()
         self.uname = platform.uname()
         self.computer = platform.node()
-        user32 = ctypes.windll.user32
-        self.screen_width = user32.GetSystemMetrics(0)
-        self.screen_height = user32.GetSystemMetrics(1)
+        self.screen = Screen()
+        self.screen_width = self.screen.getBounds()[2]
+        self.screen_height = self.screen.getBounds()[3]
+        self.num_screen = self.screen.getNumberScreens()
         self.database_directory = "sqlite3"
         self.database = "Pybot.sqlite3"
+        self.cache = cache
+        if self.cache is True:
+            self._cache()
+
+    def __repr__(self):
+        """
+        Description of the Pybot object
+        """
+        return "{0} automaton executed on {1}, a {2} computer".format(
+            self.python_version, self.computer, self.OS_version)
+
+    def _cache(self):
+        """Caching method called if cache kwarg of the constructor is True (default)"""
         makedirs(self.database_directory, exist_ok=True)
         db = sqlite3.connect(path.join(self.database_directory, self.database))
         db.execute(
@@ -80,8 +96,8 @@ class Pybot:
         request = 'SELECT COUNT (*) FROM (SELECT node, width, height FROM screen WHERE node = ? GROUP BY node, width, height);'
         cur = db.cursor()
         cur.execute(request, (self.computer,))
-        self.num_screen = cur.fetchone()[0]
-        if self.num_screen > 1:
+        res = cur.fetchone()[0]
+        if res > 1:
             if easygui.ynbox(
                     'Various screens have been used by this computer.\nIt can mess with Sikuli image recognition.\nShall I continue?',
                     'Display warning', ('Yes', 'No')):
@@ -91,14 +107,17 @@ class Pybot:
         cur.close()
         db.close()
 
-    def __repr__(self):
-        """
-        Description of the Pybot object
-        """
-        return "{0} automaton executed on {1}, a {2} computer".format(
-            self.python_version, self.computer, self.OS_version)
-
     def purge_cache(self):
+        """
+        Deleting database
+
+        Returns:
+            True if cache is clear, False on contrary
+        """
+        rmtree(self.database_directory)
+        return path.isdir(self.database_directory) is False
+
+    def screenshot(self):
         """
         Deleting database
 
@@ -517,6 +536,8 @@ class PybotTest(unittest.TestCase):
     def test_H_script_sikuli(self):
         """Test the cache"""
         test_automaton = Pybot()
+        assert test_automaton.purge_cache() is True
+        test_automaton = Pybot(cache=False)
         assert test_automaton.purge_cache() is True
 
 
