@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f750e08f-99d4-400d-8e76-2c13fc8ea360" name="Default" comment="" />
+    <list default="true" id="f750e08f-99d4-400d-8e76-2c13fc8ea360" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/Pybot/TahomaBee.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pybot/TahomaBee.py.bak" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pybot/test.png" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,8 +51,8 @@
       <file leaf-file-name="Pybot.bat" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Pybot.bat">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
+            <state relative-caret-position="442">
+              <caret line="44" column="5" lean-forward="true" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -441,7 +445,14 @@
       <option name="project" value="LOCAL" />
       <updated>1526680388767</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Pybot.bat correction">
+      <created>1526684684349</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1526684684349</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -453,7 +464,7 @@
     <frame x="-8" y="-8" width="1376" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24338235" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24338235" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5007353" side_tool="true" weight="0.3290938" />
       <window_info anchor="bottom" id="Version Control" order="7" />
@@ -488,7 +499,8 @@
     <MESSAGE value="Verify if different have been used and if so display message." />
     <MESSAGE value="Caching optional and screen info" />
     <MESSAGE value="Screenshot method" />
-    <option name="LAST_COMMIT_MESSAGE" value="Screenshot method" />
+    <MESSAGE value="Pybot.bat correction" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pybot.bat correction" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -782,8 +794,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Pybot.bat">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
+        <state relative-caret-position="442">
+          <caret line="44" column="5" lean-forward="true" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
         </state>
       </provider>
     </entry>
