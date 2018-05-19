@@ -21,6 +21,12 @@ Sikuli project to python 3 to take advantage of that powerful scripting language
   needs [Tesseract OCR](https://github.com/tesseract-ocr/tesseract), for the python wrapper to work the tesseract. It should
   be something like ```C:\Program Files (x86)\Tesseract-OCR```.
   
+### Pip packages
+  The pip package lackey (the only python3 Sikuli wrapper) , virtualenv, pytest, pytest-html, doxypypy, lackey, isort, autopep8,
+  wheel, easygui and pytesseract pip packages. Sikuli method name are named like built-in or classical python method like 
+  `type()`. lackey renamed the original method an _, `type()` becomes `type_()`. For the same reason it also depend on the 
+  pip package virtualenv, cause it is highly recommended to run this library out of classical python.
+
 ## Use
   Download from this git repository and create the virtulenv:
   ```cmd
@@ -53,12 +59,5 @@ Sikuli project to python 3 to take advantage of that powerful scripting language
   Pybot clear
   ```
   
-  
-### Pip packages
-  The pip package lackey (the only python3 Sikuli wrapper) , virtualenv, pytest, pytest-html, doxypypy, lackey, isort, autopep8,
-  wheel, easygui and pytesseract pip packages. Sikuli method name are named like built-in or classical python method like 
-  `type()`. lackey renamed the original method an _, `type()` becomes `type_()`. For the same reason it also depend on the 
-  pip package virtualenv, cause it is highly recommended to run this library out of classical python.
-
 ## Contact
   https://PapIT.fr or christophe.brun@papit.fr
