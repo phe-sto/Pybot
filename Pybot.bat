@@ -9,11 +9,16 @@ set FOLDER_SCRIPT=script
 call %ACTIVATE%
 if "%function%"=="" (
     echo Please provide a function to execute as first argument
+    deactivate
+)
+if "%function%"=="activate" (
+    echo venv activate
 )
 if "%function%"=="clear" (
     virtualenv venv --clear
 )
 if "%function%"=="remove" (
+    deactivate
     rmdir venv /s /q
 )
 if "%function%"=="setup" (

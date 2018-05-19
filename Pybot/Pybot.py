@@ -8,6 +8,7 @@
 # -> !!! Coding style is CamelCase for classes and lowercase_separated_by_underscores for methods and variables !!! <-
 ########################################################################################################################
 """
+import locale
 import re
 import sqlite3
 # Import unittest in case of test automation
@@ -46,6 +47,15 @@ SQLITE3_DATABASE = "pybot.sqlite3"
 SCRCPY_FOLDER = "scrcpy-windows-v1.1"
 SCRCPY_EXE = "scrcpy.exe"
 TESSERACT_CMD = "tesseract"
+TESSERACT_LANG = {
+    "fr": "fra",
+    "en": "eng",
+    "ar": "ara",
+    "ja": "jpn",
+    "es": "spa",
+    "de": "deu",
+    "ru": "rus",
+}
 
 
 class PybotException(Exception):
@@ -83,6 +93,8 @@ class Pybot:
         self.database = SQLITE3_DATABASE
         self.cache = cache
         self._cache_automaton_screen()
+        self.locale_lang = locale.getdefaultlocale()[0]
+        self.tesseract_lang = TESSERACT_LANG[self.locale_lang[0:2]]
         # init tesseract command
         pytesseract.pytesseract.tesseract_cmd = TESSERACT_CMD
 
@@ -103,7 +115,7 @@ class Pybot:
         rmtree(self.database_directory)
         return path.isdir(self.database_directory) is False
 
-    def screenshot(self, bounds=None, text=False):
+    def screenshot(self, bounds=None, text=False, lang=None):
         """
         Taking a screenshot, default is all the screen
 
@@ -130,7 +142,7 @@ class Pybot:
         move(img_file, IMG_FOLDER)
         del img
         if text is True:
-            text_string = self.get_text_img(img_file)
+            text_string = self.get_text_img(img_file, lang=lang)
         else:
             text_string = ''
         self._cache_screenshot(img_file, text=text_string)
@@ -141,7 +153,7 @@ class Pybot:
         if lang is None:
             text = pytesseract.pytesseract.image_to_string(img)
         else:
-            text = pytesseract.pytesseract.image_to_string(img, lang)
+            text = pytesseract.pytesseract.image_to_string(img, lang=lang)
         return text
 
     def check_click(self, img, sleep_sec=0, after_click=None):
@@ -609,6 +621,9 @@ class PybotTest(unittest.TestCase):
         test_automaton = Pybot()
         assert test_automaton.screenshot() == (1, '')
         res = test_automaton.screenshot(text=True)
+        assert res[0] == 1
+        assert res[1] != ''
+        res = test_automaton.screenshot(text=True, lang='eng')
         assert res[0] == 1
         assert res[1] != ''
 
