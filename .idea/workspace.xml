@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f750e08f-99d4-400d-8e76-2c13fc8ea360" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pybot.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Pybot.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pybot/Pybot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pybot/Pybot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,13 +14,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Pybot.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Pybot.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Pybot/Pybot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="138" column="20" selection-start-line="138" selection-start-column="8" selection-end-line="138" selection-end-column="20" />
+            <state relative-caret-position="-5302">
+              <caret line="144" column="63" selection-start-line="144" selection-start-column="63" selection-end-line="144" selection-end-column="63" />
               <folding>
-                <element signature="e#673#682#0" expanded="true" />
+                <element signature="e#673#686#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -52,8 +50,8 @@
       <file leaf-file-name="Pybot.bat" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Pybot.bat">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="16" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="34" />
+            <state relative-caret-position="102">
+              <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -61,8 +59,8 @@
       <file leaf-file-name="setup.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/setup.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="15" column="88" selection-start-line="15" selection-start-column="88" selection-end-line="15" selection-end-column="88" />
+            <state relative-caret-position="204">
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -79,12 +77,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="204">
-                <caret line="12" column="44" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
+              <first_editor relative-caret-position="-255">
+                <caret line="21" column="63" selection-start-line="21" selection-start-column="63" selection-end-line="21" selection-end-column="63" />
               </first_editor>
               <second_editor />
             </state>
@@ -102,8 +100,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>isinstanc</find>
-      <find>cmd_to_exec</find>
       <find>start</find>
       <find>print(</find>
       <find>print</find>
@@ -128,6 +124,12 @@
       <find>.png</find>
       <find>scrcpy-windows-v1.1</find>
       <find>scrcpy.exe</find>
+      <find>get_text_img</find>
+      <find>screen</find>
+      <find>tessera</find>
+      <find>.screenshot</find>
+      <find>screenshot</find>
+      <find>pytes</find>
     </findStrings>
     <replaceStrings>
       <replace>cmd</replace>
@@ -149,7 +151,6 @@
         <option value="$PROJECT_DIR$/PapIT.sikuli/PapIT.py" />
         <option value="$PROJECT_DIR$/Auto.sikuli/Auto.py" />
         <option value="$PROJECT_DIR$/Auto/Auto.py" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$USER_HOME$/AppData/Local/Temp/TahomaBee.py" />
         <option value="$PROJECT_DIR$/Pybot/__init__.py" />
         <option value="$PROJECT_DIR$/setup.bat" />
@@ -160,9 +161,10 @@
         <option value="$PROJECT_DIR$/export_sikuli_class.py" />
         <option value="$PROJECT_DIR$/Pybot/test.py" />
         <option value="$PROJECT_DIR$/export_sikuli_script.py" />
-        <option value="$PROJECT_DIR$/Pybot.bat" />
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/Pybot/Pybot.py" />
+        <option value="$PROJECT_DIR$/Pybot.bat" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -460,7 +462,21 @@
       <option name="project" value="LOCAL" />
       <updated>1526684822849</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Tesseract to get text from image">
+      <created>1526733635682</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1526733635682</updated>
+    </task>
+    <task id="LOCAL-00016" summary="README.md update">
+      <created>1526745541759</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1526745541759</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -471,12 +487,12 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1376" height="744" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24338235" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32352942" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5007353" side_tool="true" weight="0.3290938" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.3290938" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49926472" visible="true" weight="0.32750398" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49926472" weight="0.32750398" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32750398" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -489,6 +505,25 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3290938" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49926472" weight="0.32750398" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24338235" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3290938" />
+      <window_info anchor="bottom" id="Python Console" order="7" weight="0.3290938" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3990461" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32750398" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5007353" side_tool="true" weight="0.3290938" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -508,7 +543,9 @@
     <MESSAGE value="Screenshot method" />
     <MESSAGE value="Pybot.bat correction" />
     <MESSAGE value="Remove files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove files" />
+    <MESSAGE value="Tesseract to get text from image" />
+    <MESSAGE value="README.md update" />
+    <option name="LAST_COMMIT_MESSAGE" value="README.md update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -531,7 +568,7 @@
         <state relative-caret-position="7191">
           <caret line="431" column="14" selection-start-line="430" selection-end-line="431" selection-end-column="55" />
           <folding>
-            <element signature="e#673#682#0" expanded="true" />
+            <element signature="e#673#686#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -592,7 +629,7 @@
         <state relative-caret-position="5576">
           <caret line="336" column="38" selection-start-line="336" selection-start-column="38" selection-end-line="336" selection-end-column="38" />
           <folding>
-            <element signature="e#673#682#0" expanded="true" />
+            <element signature="e#673#686#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -632,7 +669,7 @@
         <state relative-caret-position="5236">
           <caret line="316" column="43" selection-start-line="316" selection-start-column="43" selection-end-line="316" selection-end-column="43" />
           <folding>
-            <element signature="e#673#682#0" expanded="true" />
+            <element signature="e#673#686#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -740,37 +777,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="204">
-            <caret line="12" column="44" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/-812882217/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
           <caret line="790" column="27" lean-forward="true" selection-start-line="790" selection-start-column="27" selection-end-line="794" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Pybot.bat">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="16" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="15" column="88" selection-start-line="15" selection-start-column="88" selection-end-line="15" selection-end-column="88" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -791,13 +801,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Pybot/Pybot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="138" column="20" selection-start-line="138" selection-start-column="8" selection-end-line="138" selection-end-column="20" />
+        <state relative-caret-position="-5302">
+          <caret line="144" column="63" selection-start-line="144" selection-start-column="63" selection-end-line="144" selection-end-column="63" />
           <folding>
-            <element signature="e#673#682#0" expanded="true" />
+            <element signature="e#673#686#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Pybot.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="-255">
+            <caret line="21" column="63" selection-start-line="21" selection-start-column="63" selection-end-line="21" selection-end-column="63" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
