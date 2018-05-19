@@ -15,7 +15,7 @@ import sqlite3
 import unittest
 from datetime import datetime
 # To start program of command
-from os import system, path, makedirs
+from os import system, path, makedirs, remove
 from shutil import copy, rmtree, move
 from subprocess import check_output
 
@@ -115,6 +115,25 @@ class Pybot:
         rmtree(self.database_directory)
         return path.isdir(self.database_directory) is False
 
+    def text(self, bounds=None, lang=None):
+        """
+        Retrievge the text on the screen, default is all the screen
+
+        Kwargs:
+            bounds: The bounds of the image to take, default is None, to get the all screen
+            lang: Specify a lang for the image text
+
+        Returns:
+            The string decrypted from the screen
+
+        Examples:
+            test_automaton = Pybot()
+            test_automaton.text(lang='eng') # get text of the full screen with english text description
+        """
+        text = screenshot(self, bounds=bounds, text=True, lang=lang)
+        remove(path.join(IMG_FOLDER + text[1]))
+        return text
+
     def screenshot(self, bounds=None, text=False, lang=None):
         """
         Taking a screenshot, default is all the screen
@@ -122,9 +141,14 @@ class Pybot:
         Kwargs:
             bounds: The bounds of the image to take, default is None, to get the all screen
             text: Boolean True to discover text False on contrary
+            lang: Specify a lang for the image text
 
         Returns:
-            A tuple made of the boolean integer followed by the text discovered in the image
+            A tuple made of the boolean integer, image file and thetext discovered in the image
+
+        Examples:
+            test_automaton = Pybot()
+            test_automaton.screenshot(lang='eng') # Screenshot of the full screen with english text description
         """
         if bounds is None:
             b = self.screen_bounds
@@ -146,9 +170,25 @@ class Pybot:
         else:
             text_string = ''
         self._cache_screenshot(img_file, text=text_string)
-        return int(path.isfile(path.join(IMG_FOLDER + img_file))), text_string
+        return int(path.isfile(path.join(IMG_FOLDER + img_file))), img_file, text_string
 
     def get_text_img(self, img_file, lang=None):
+        """
+        Retrieve text from an image
+
+        Args:
+            img_file: Name of the image file
+
+        Kwargs:
+            lang: None is default, those specify a language to tesseract
+
+        Returns:
+            String of the text decrypted
+
+        Examples:
+            test_automaton = Pybot()
+            test_automaton.screenshot("1234567891012.png",lang='eng') # Retrieve text from 1234567891012.png with english text description
+        """
         img = Image.open(path.join(IMG_FOLDER + img_file))
         if lang is None:
             text = pytesseract.pytesseract.image_to_string(img)
@@ -320,9 +360,9 @@ class Pybot:
 
         Args:
             pgm: Program to start
-            wd: Working directory to start the program, with the .exe extension
 
         Kwargs:
+            wd: Working directory to start the program, with the .exe extension
             pgm_arg: Eventual argument of the program to start
             sleep_sec: Number of seconds of seconds to eventually sleep after the click
 
@@ -619,13 +659,13 @@ class PybotTest(unittest.TestCase):
     def test_I_screenshot(self):
         """Test the screenshot method"""
         test_automaton = Pybot()
-        assert test_automaton.screenshot() == (1, '')
+        assert test_automaton.screenshot()[2] == ''
         res = test_automaton.screenshot(text=True)
         assert res[0] == 1
-        assert res[1] != ''
+        assert res[2] != ''
         res = test_automaton.screenshot(text=True, lang='eng')
         assert res[0] == 1
-        assert res[1] != ''
+        assert res[2] != ''
 
 
 """

@@ -1,7 +1,12 @@
 # Pybot
-This automation framework aims to interact with GUI (web, desktop, etc) from the computer, or a connected Android. Many tasks 
+
+&npsp;&npsp;&npsp;&npsp;![Logo](img/Pybot.png)
+
+This automation framework aims to interact with GUI (web, desktop, android, etc) from the computer, or a connected Android. Many tasks 
 could be automated, like information harvesting or tests. Script can be designed with Sikuli IDE. The framework then convert 
 Sikuli project to python 3 to take advantage of that powerful scripting language and the python 3 ecosystem.
+
+&npsp;&npsp;&npsp;&npsp;![Architecture](img/PybotArch.png)
 
 ## Platforms
   At the moment, for computer, only Windows platforms are supported. Android can be accessed by mirroring thanks to [scrpy](https://github.com/Genymobile/scrcpy)
