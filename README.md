@@ -30,7 +30,7 @@ Sikuli project to python 3 to take advantage of that powerful scripting language
   lackey renamed the original method an ```_```, ```type()``` becomes ```type_()```. For the same reason it also depend on the 
   pip package virtualenv, cause it is highly recommended to run this library out of classical python.
 
-## Use
+## CLI
   Download from this git repository and create the virtulenv:
   ```cmd
   git clone https://github.com/phe-sto/Pybot.git
@@ -61,6 +61,8 @@ Sikuli project to python 3 to take advantage of that powerful scripting language
   ```cmd
   Pybot clear
   ```
+## Python 3 class and method
+  Doxygen documention can be found on that website [https://www.papit.fr/pybot/](https://www.papit.fr/pybot/)
   
 ## Contact
-  https://PapIT.fr or christophe.brun@papit.fr
+  [https://www.papit.fr](https://www.papit.fr) or christophe.brun@papit.fr
