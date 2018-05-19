@@ -3,46 +3,48 @@ cls
 set function=%1
 set arg1=%2
 set arg2=%3
-set ACTIVATE = "venv/Scripts/activate"
+set ACTIVATE=venv/Scripts/activate
+set FOLDER_PYBOT=Pybot
+set FOLDER_SCRIPT=script
+call %ACTIVATE%
 if "%function%"=="" (
     echo Please provide a function to execute as first argument
 )
 if "%function%"=="clear" (
-    call
     virtualenv venv --clear
 )
 if "%function%"=="remove" (
-    deactivate
     rmdir venv /s /q
 )
 if "%function%"=="setup" (
-    deactivate
     virtualenv venv
-    call %ACTIVATE%
     call :setup
 )
 if "%function%"=="export" (
     if "%arg2%"=="" (
         echo Please provide the sikuli project to export as second argument
     ) else (
-        if "%arg1%"=="class" (
-            call %ACTIVATE%
-            python export_sikuli_class.py %arg2%
-            python script/2to3.py -w Pybot/%arg2%.py
-            isort Pybot/%arg2%.py
-            autopep8 --in-place Pybot/%arg2%.py
+        if "%arg1%"=="script" (
+            python export_sikuli_script.py %arg2%
+            python %FOLDER_SCRIPT%/2to3.py -w %FOLDER_PYBOT%/%arg2%.py
+            isort %FOLDER_PYBOT%/%arg2%.py
+            autopep8 --in-place %FOLDER_PYBOT%/%arg2%.py
             call :setup
-        ) else (
-            echo Please provide specify class or script as second argument
+        ) else if "%arg1%"=="class" (
+                python export_sikuli_class.py %arg2%
+                python %FOLDER_SCRIPT%/2to3.py -w %FOLDER_PYBOT%/%arg2%.py
+                isort %FOLDER_PYBOT%/%arg2%.py
+                autopep8 --in-place %FOLDER_PYBOT%/%arg2%.py
+                call :setup
+            ) else (
+                echo Please provide specify class or script as second argument
         )
     )
 )
 if "%function%"=="test" (
-    call %ACTIVATE%
-    python Pybot/Pybot.py
+    python %FOLDER_PYBOT%/Pybot.py
 )
 pause
-deactivate
 exit /B 0
 :setup
     python setup.py build

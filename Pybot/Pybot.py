@@ -19,6 +19,7 @@ from shutil import copy, rmtree, move
 from subprocess import check_output
 
 import easygui
+import pytesseract
 from PIL import Image
 from lackey import *
 
@@ -44,6 +45,7 @@ SQLITE3_EXT = "sqlite3"
 SQLITE3_DATABASE = "pybot.sqlite3"
 SCRCPY_FOLDER = "scrcpy-windows-v1.1"
 SCRCPY_EXE = "scrcpy.exe"
+TESSERACT_CMD = "tesseract"
 
 
 class PybotException(Exception):
@@ -81,6 +83,8 @@ class Pybot:
         self.database = SQLITE3_DATABASE
         self.cache = cache
         self._cache_automaton_screen()
+        # init tesseract command
+        pytesseract.pytesseract.tesseract_cmd = TESSERACT_CMD
 
     def __repr__(self):
         """
@@ -88,45 +92,6 @@ class Pybot:
         """
         return "{0} automaton executed on {1}, a {2} computer".format(
             self.python_version, self.computer, self.OS_version)
-
-    def _cache_automaton_screen(self):
-        """Caching the computer and screen called if cache kwarg of the constructor is True (default)"""
-        if self.cache is True:
-            makedirs(self.database_directory, exist_ok=True)
-            db = sqlite3.connect(path.join(self.database_directory, self.database))
-            db.execute(
-                'CREATE TABLE IF NOT EXISTS computer (node TEXT PRIMARY KEY, os_type TEXT, os_version TEXT, ts TIMESTAMP);')
-            request = "INSERT OR REPLACE INTO computer VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
-            db.execute(request, (self.computer, self.OS_type, self.OS_version,))
-            db.execute(
-                'CREATE TABLE IF NOT EXISTS screen (node TEXT, width INT, height INT, ts TIMESTAMP);')
-            request = "INSERT INTO screen VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
-            db.execute(request, (self.computer, self.screen_width, self.screen_height,))
-            db.commit()
-            request = 'SELECT COUNT (*) FROM (SELECT node, width, height FROM screen WHERE node = ? GROUP BY node, width, height);'
-            cur = db.cursor()
-            cur.execute(request, (self.computer,))
-            res = cur.fetchone()[0]
-            if res > 1:
-                if easygui.ynbox(
-                        'Various screens have been used by this computer.\nIt can mess with Sikuli image recognition.\nShall I continue?',
-                        'Display warning', ('Yes', 'No')):
-                    pass
-                else:
-                    sys.exit(0)
-            cur.close()
-            db.close()
-
-    def _cache_screenshot(self, file_name):
-        """Caching the the name of the screenshot image"""
-        if self.cache is True:
-            db = sqlite3.connect(path.join(self.database_directory, self.database))
-            db.execute(
-                'CREATE TABLE IF NOT EXISTS screenshot (node TEXT PRIMARY KEY, image TEXT, ts TIMESTAMP);')
-            request = "INSERT OR REPLACE INTO screenshot VALUES(?, ?, DATETIME('now', 'localtime'));"
-            db.execute(request, (self.computer, file_name,))
-            db.commit()
-            db.close()
 
     def purge_cache(self):
         """
@@ -138,12 +103,16 @@ class Pybot:
         rmtree(self.database_directory)
         return path.isdir(self.database_directory) is False
 
-    def screenshot(self, bounds=None):
+    def screenshot(self, bounds=None, text=False):
         """
         Taking a screenshot, default is all the screen
 
+        Kwargs:
+            bounds: The bounds of the image to take, default is None, to get the all screen
+            text: Boolean True to discover text False on contrary
+
         Returns:
-            True if image exist in image folder
+            A tuple made of the boolean integer followed by the text discovered in the image
         """
         if bounds is None:
             b = self.screen_bounds
@@ -154,14 +123,26 @@ class Pybot:
                 raise PybotException(
                     "Bound arg has to be a tuple with length of 4 multiply by the number of screen(s)")
         data = self.screen.capture(b)
-        file_name = str(datetime.now().timestamp()).replace('.', '')
-        file_name = "".join([file_name[2:15], IMAGE_EXT])
+        img_file = str(datetime.now().timestamp()).replace('.', '')
+        img_file = "".join([img_file[2:15], IMAGE_EXT])
         img = Image.fromarray(data)
-        img.save(file_name)
-        move(file_name, IMG_FOLDER)
+        img.save(img_file)
+        move(img_file, IMG_FOLDER)
         del img
-        self._cache_screenshot(file_name)
-        return path.isfile(path.join(IMG_FOLDER + file_name))
+        if text is True:
+            text_string = self.get_text_img(img_file)
+        else:
+            text_string = ''
+        self._cache_screenshot(img_file, text=text_string)
+        return int(path.isfile(path.join(IMG_FOLDER + img_file))), text_string
+
+    def get_text_img(self, img_file, lang=None):
+        img = Image.open(path.join(IMG_FOLDER + img_file))
+        if lang is None:
+            text = pytesseract.pytesseract.image_to_string(img)
+        else:
+            text = pytesseract.pytesseract.image_to_string(img, lang)
+        return text
 
     def check_click(self, img, sleep_sec=0, after_click=None):
         """
@@ -391,22 +372,6 @@ class Pybot:
         self._check_n_sleep(sleep_sec)
         return rt
 
-    def _check_n_sleep(self, s):
-        """
-        Internal method to check s, the number of second to sleep which as to be int or float
-
-        Args:
-            s: Number of seconds
-
-        Raises:
-            PybotException
-        """
-        if isinstance(s, (int, float)):
-            sleep(s)
-        else:
-            raise PybotException(
-                "sleep_sec KWARG is a time in to sleep after click, therefore must be an int or float")
-
     def start_web(self, url, sleep_sec=0):
         """
         Start a website on the default browser, wait 5 seconds for it to open and full screen it on Windows OS
@@ -497,6 +462,69 @@ class Pybot:
                 copy(img, IMG_FOLDER)
         return path.isfile(new_file)
 
+    def _check_n_sleep(self, s):
+        """
+        Internal method to check s, the number of second to sleep which as to be int or float
+
+        Args:
+            s: Number of seconds
+
+        Raises:
+            PybotException
+        """
+        if isinstance(s, (int, float)):
+            sleep(s)
+        else:
+            raise PybotException(
+                "sleep_sec KWARG is a time in to sleep after click, therefore must be an int or float")
+
+    def _cache_automaton_screen(self):
+        """Caching the computer and screen called if cache kwarg of the constructor is True (default)"""
+        if self.cache is True:
+            makedirs(self.database_directory, exist_ok=True)
+            db = sqlite3.connect(path.join(self.database_directory, self.database))
+            db.execute(
+                'CREATE TABLE IF NOT EXISTS computer (node TEXT PRIMARY KEY, os_type TEXT, os_version TEXT, ts TIMESTAMP);')
+            request = "INSERT OR REPLACE INTO computer VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
+            db.execute(request, (self.computer, self.OS_type, self.OS_version,))
+            db.execute(
+                'CREATE TABLE IF NOT EXISTS screen (node TEXT, width INT, height INT, ts TIMESTAMP);')
+            request = "INSERT INTO screen VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
+            db.execute(request, (self.computer, self.screen_width, self.screen_height,))
+            db.commit()
+            request = 'SELECT COUNT (*) FROM (SELECT node, width, height FROM screen WHERE node = ? GROUP BY node, width, height);'
+            cur = db.cursor()
+            cur.execute(request, (self.computer,))
+            res = cur.fetchone()[0]
+            if res > 1:
+                if easygui.ynbox(
+                        'Various screens have been used by this computer.\nIt can mess with Sikuli image recognition.\nShall I continue?',
+                        'Display warning', ('Yes', 'No')):
+                    pass
+                else:
+                    sys.exit(0)
+            cur.close()
+            db.close()
+
+    def _cache_screenshot(self, file_name, text=""):
+        """
+        Caching the the name of the screenshot image
+
+        Args:
+            file_name: Name of the image file to cache
+
+        Kwargs:
+            text: Text detected in the image
+        """
+        if self.cache is True:
+            db = sqlite3.connect(path.join(self.database_directory, self.database))
+            db.execute(
+                'CREATE TABLE IF NOT EXISTS screenshot (image TEXT PRIMARY KEY, node TEXT, text TEXT, ts TIMESTAMP);')
+            request = "INSERT OR REPLACE INTO screenshot VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
+            db.execute(request, (file_name, self.computer, text,))
+            db.commit()
+            db.close()
+
 
 """
 ########################################################################################################################
@@ -579,7 +607,10 @@ class PybotTest(unittest.TestCase):
     def test_I_screenshot(self):
         """Test the screenshot method"""
         test_automaton = Pybot()
-        assert test_automaton.screenshot() is True
+        assert test_automaton.screenshot() == (1, '')
+        res = test_automaton.screenshot(text=True)
+        assert res[0] == 1
+        assert res[1] != ''
 
 
 """
