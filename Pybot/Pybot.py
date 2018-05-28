@@ -1,12 +1,10 @@
 """
-########################################################################################################################
-# Pybot class can be used as Jython source to be used in sikuli IDE, not pure python or python3
-# Initialize the script by importing the required libraries for test (a.k.a unittest), subprocess and system to using
-# Windows commands
-# Lackey package provide a wrapper arround Sikuli
-# Source description
-# -> !!! Coding style is CamelCase for classes and lowercase_separated_by_underscores for methods and variables !!! <-
-########################################################################################################################
+Pybot class can be used as Jython source to be used in sikuli IDE, not pure python or python3
+Initialize the script by importing the required libraries for test (a.k.a unittest), subprocess and system to using
+Windows commands
+Lackey package provide a wrapper arround Sikuli
+Source description
+-> !!! Coding style is CamelCase for classes and lowercase_separated_by_underscores for methods and variables !!! <-
 """
 import locale
 import re
@@ -33,11 +31,9 @@ __email__ = "christophe.brun@papit.fr"
 __status__ = "Development"
 
 """
-########################################################################################################################
-# Custom class to be used in as an abstraction layer to sikuli methods and corresponding exception
-# Can used command to start/stop program or use commands, access Android mirroring
-# Interpretation of GUI, access to windows system commands
-########################################################################################################################
+Custom class to be used in as an abstraction layer to sikuli methods and corresponding exception
+Can used command to start/stop program or use commands, access Android mirroring
+Interpretation of GUI, access to windows system commands
 """
 
 IMG_FOLDER = "img/"
@@ -47,6 +43,7 @@ SQLITE3_DATABASE = "pybot.sqlite3"
 SCRCPY_FOLDER = "scrcpy-windows-v1.1"
 SCRCPY_EXE = "scrcpy.exe"
 TESSERACT_CMD = "tesseract"
+# TODO all the tesseract languages available
 TESSERACT_LANG = {
     "fr": "fra",
     "en": "eng",
@@ -283,9 +280,9 @@ class Pybot:
         self._check_n_sleep(sleep_sec)
         return rt == 0
 
-    def start_android_gui(self, sleep_sec=0):
+    def start_android_gui(self, sleep_sec=5, fullscreen=True):
         """
-        Start Android mirroring with SCRCPY_EXE if connected
+        Start Android mirroring with SCRCPY_EXE if connected and full screen it
 
         Kwargs:
             sleep_sec: Number of seconds to eventually sleep after the click
@@ -294,10 +291,74 @@ class Pybot:
              Boolean True if started, False on contrary
         """
         if self.android_number() == 1:
-            return self.start_pgm(
+            rc = self.start_pgm(
                 SCRCPY_EXE, wd=SCRCPY_FOLDER, sleep_sec=sleep_sec)
         else:
-            return False
+            rc = False
+        if fullscreen is True:
+            self.android_fullscreen()
+        return rc
+
+    def android_fullscreen(self):
+        """
+        Type the scrcpy shortcut to full screen f + CTRL
+        """
+        self.ctrl_shorcut('f')
+
+    def android_resize_one_to_one(self):
+        """
+        resize window to 1:1 (pixel-perfect)
+        """
+        self.ctrl_shorcut('g')
+
+    def android_remove_black_borders(self):
+        """resize window to remove black borders"""
+        self.ctrl_shorcut('x')
+
+    def android_home(self):
+        """click on HOME"""
+        self.ctrl_shorcut('h')
+
+    def android_back(self):
+        """click on BACK"""
+        self.ctrl_shorcut('b')
+
+    def android_app_switch(self):
+        """click on APP_SWITCH"""
+        self.ctrl_shorcut('m')
+
+    def android_volume_up(self):
+        """click on VOLUME_UP"""
+        self.ctrl_shorcut('+')
+
+    def android_volume_down(self):
+        """click on VOLUME_DOWN"""
+        self.ctrl_shorcut('-')
+
+    def turn_screen_on(self):
+        """turn screen on"""
+        rightClick()
+
+    def android_power(self):
+        """click on POWER"""
+        self.ctrl_shorcut('p')
+
+    def android_toggle_FPS_counter(self):
+        """paste computer clipboard to device"""
+        self.ctrl_shorcut('v')
+
+    def android_toggle_FPS_counter(self):
+        """enable/disable FPS counter (on stdout)"""
+        self.ctrl_shorcut('i')
+
+    def ctrl_shorcut(self, key):
+        """
+        Type a key with the key modifier CTRL
+
+        Args:
+            key: The key to type with the CTRL modifier
+        """
+        type(key, Key.CTRL)
 
     def check_android_gui(self):
         """
@@ -579,13 +640,11 @@ class Pybot:
 
 
 """
-########################################################################################################################
-# PybotTest as unittest.Testcase to test the development of the Pybot class
-# test_B_Pybot_init: Test the initialization of the Pybot object
-# test_C_pgm: Test of the methods related to program management
-# test_D_android: Test of the methods related to Android connection and mirroring
-# test_E_web: Test the opening of a website in the default browser
-########################################################################################################################
+PybotTest as unittest.Testcase to test the development of the Pybot class
+test_B_Pybot_init: Test the initialization of the Pybot object
+test_C_pgm: Test of the methods related to program management
+test_D_android: Test of the methods related to Android connection and mirroring
+test_E_web: Test the opening of a website in the default browser
 """
 
 
@@ -669,9 +728,7 @@ class PybotTest(unittest.TestCase):
 
 
 """
-########################################################################################################################
-# Start the tests of the Pybot class
-########################################################################################################################
+Start the tests of the Pybot class
 """
 if __name__ == '__main__':
     unittest.main()
