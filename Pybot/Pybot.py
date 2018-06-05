@@ -102,6 +102,12 @@ class Pybot:
         return "{0} automaton executed on {1}, a {2} computer".format(
             self.python_version, self.computer, self.OS_version)
 
+    def __del__(self):
+        """
+        On Pybot object
+        """
+        self.stop_android_gui()
+
     def purge_cache(self):
         """
         Deleting database
