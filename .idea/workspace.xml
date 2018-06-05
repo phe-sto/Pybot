@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f750e08f-99d4-400d-8e76-2c13fc8ea360" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pybot/Pybot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pybot/Pybot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Auto.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Chrichri.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,7 +21,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Pybot.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Pybot.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Pybot/Pybot.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="221">
@@ -27,6 +31,11 @@
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file leaf-file-name="export_sikuli_class.py" pinned="false" current-in-tab="false">
@@ -169,6 +178,7 @@
         <option value="$PROJECT_DIR$/Pybot.bat" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Pybot/Pybot.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -210,7 +220,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/setup.bat" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -515,7 +525,14 @@
       <option name="project" value="LOCAL" />
       <updated>1527533392989</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary=" and __del__ of the Pybot object">
+      <created>1528215097398</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1528215097398</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -525,7 +542,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1376" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32352942" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -593,7 +609,8 @@
     <MESSAGE value="link to API documentation" />
     <MESSAGE value="scrcpy wrapper" />
     <MESSAGE value="gitignore .idea" />
-    <option name="LAST_COMMIT_MESSAGE" value="gitignore .idea" />
+    <MESSAGE value=" and __del__ of the Pybot object" />
+    <option name="LAST_COMMIT_MESSAGE" value=" and __del__ of the Pybot object" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -601,13 +618,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Pybot/TahomaBee.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3723">
-          <caret line="219" column="54" selection-start-line="219" selection-start-column="54" selection-end-line="219" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Pybot.bat">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -867,6 +877,9 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
