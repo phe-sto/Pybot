@@ -294,6 +294,7 @@ class Pybot:
 
         Kwargs:
             sleep_sec: Number of seconds to eventually sleep after the click
+            fullscreen: If True, start android scrcpy in fullscreen
 
         Returns:
              Boolean True if started, False on contrary
