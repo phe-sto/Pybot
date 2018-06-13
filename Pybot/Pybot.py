@@ -13,9 +13,10 @@ import sqlite3
 import unittest
 from datetime import datetime
 # To start program of command
-from os import system, path, makedirs, remove
+from os import system, path, makedirs, remove, listdir
 from shutil import copy, rmtree, move
 from subprocess import check_output
+from time import sleep
 
 import easygui
 import pytesseract
@@ -76,8 +77,8 @@ class Pybot:
             raise PybotException(
                 "Pybot class only for Windows platform at the moment")
         self.python_version = sys.version
-        self.OS_type = platform.system()
-        self.OS_version = platform.platform()
+        self.os_type = platform.system()
+        self.os_version = platform.platform()
         self.machine = platform.machine()
         self.uname = platform.uname()
         self.computer = platform.node()
@@ -100,7 +101,7 @@ class Pybot:
         Description of the Pybot object
         """
         return "{0} automaton executed on {1}, a {2} computer".format(
-            self.python_version, self.computer, self.OS_version)
+            self.python_version, self.computer, self.os_version)
 
     def __del__(self):
         """
@@ -133,7 +134,7 @@ class Pybot:
             test_automaton = Pybot()
             test_automaton.text(lang='eng') # get text of the full screen with english text description
         """
-        text = screenshot(self, bounds=bounds, text=True, lang=lang)
+        _, _, text = self.screenshot(bounds=bounds, text=True, lang=lang)
         remove(path.join(IMG_FOLDER + text[1]))
         return text
 
@@ -154,14 +155,14 @@ class Pybot:
             test_automaton.screenshot(lang='eng') # Screenshot of the full screen with english text description
         """
         if bounds is None:
-            b = self.screen_bounds
+            desired_bounds = self.screen_bounds
         else:
             if isinstance(bounds, tuple) and len(bounds) == 4 * self.num_screen:
-                b = bounds
+                desired_bounds = bounds
             else:
                 raise PybotException(
                     "Bound arg has to be a tuple with length of 4 multiply by the number of screen(s)")
-        data = self.screen.capture(b)
+        data = self.screen.capture(desired_bounds)
         img_file = str(datetime.now().timestamp()).replace('.', '')
         img_file = "".join([img_file[2:15], IMAGE_EXT])
         img = Image.fromarray(data)
@@ -190,7 +191,8 @@ class Pybot:
 
         Examples:
             test_automaton = Pybot()
-            test_automaton.screenshot("1234567891012.png",lang='eng') # Retrieve text from 1234567891012.png with english text description
+            test_automaton.screenshot("1234567891012.png",lang='eng') # Retrieve text from 1234567891012.png with
+            english text description
         """
         img = Image.open(path.join(IMG_FOLDER + img_file))
         if lang is None:
@@ -257,7 +259,7 @@ class Pybot:
         """
         if isinstance(n, (int, float)):
             i = 0
-            while (i < n):
+            while i < n:
                 type(key)
                 self._check_n_sleep(sleep_sec)
                 i += 1
@@ -282,9 +284,9 @@ class Pybot:
             test_automaton = Pybot()
             test_automaton.exec_cmd("DIR")
         """
-        rt = system("{0}".format(cmd))
+        return_code = system("{0}".format(cmd))
         self._check_n_sleep(sleep_sec)
-        return rt == 0
+        return return_code == 0
 
     def start_android_gui(self, sleep_sec=5, fullscreen=True):
         """
@@ -297,13 +299,13 @@ class Pybot:
              Boolean True if started, False on contrary
         """
         if self.android_number() == 1:
-            rc = self.start_pgm(
-                SCRCPY_EXE, wd=SCRCPY_FOLDER, sleep_sec=sleep_sec)
+            return_code = self.start_pgm(
+                SCRCPY_EXE, working_directory=SCRCPY_FOLDER, sleep_sec=sleep_sec)
         else:
-            rc = False
+            return_code = False
         if fullscreen is True:
             self.android_fullscreen()
-        return rc
+        return return_code
 
     def android_fullscreen(self):
         """
@@ -349,11 +351,11 @@ class Pybot:
         """click on POWER"""
         self.ctrl_shorcut('p')
 
-    def android_toggle_FPS_counter(self):
+    def android_paste_clipboard(self):
         """paste computer clipboard to device"""
         self.ctrl_shorcut('v')
 
-    def android_toggle_FPS_counter(self):
+    def android_toggle_fps_counter(self):
         """enable/disable FPS counter (on stdout)"""
         self.ctrl_shorcut('i')
 
@@ -421,7 +423,7 @@ class Pybot:
         """
         return len(self.android())
 
-    def start_pgm(self, pgm, wd=None, pgm_arg=None, sleep_sec=0):
+    def start_pgm(self, pgm, working_directory=None, pgm_arg=None, sleep_sec=0):
         """
         Start a program in background in a given directory on Windows OS
 
@@ -429,7 +431,7 @@ class Pybot:
             pgm: Program to start
 
         Kwargs:
-            wd: Working directory to start the program, with the .exe extension
+            working_directory: Working directory to start the program, with the .exe extension
             pgm_arg: Eventual argument of the program to start
             sleep_sec: Number of seconds of seconds to eventually sleep after the click
 
@@ -438,12 +440,12 @@ class Pybot:
 
         Examples:
             test_automaton = Pybot()
-            test_automaton.start_pgm('node.exe', wd='server', sleep_sec=5)
+            test_automaton.start_pgm('node.exe', working_directory='server', sleep_sec=5)
         """
-        if wd is None:
+        if working_directory is None:
             prefix = ""
         else:
-            prefix = "cd {0} && ".format(wd)
+            prefix = "cd {0} && ".format(working_directory)
 
         if pgm_arg is None:
             suffix = ""
@@ -451,9 +453,9 @@ class Pybot:
             suffix = " {0}".format(pgm_arg)
 
         cmd = "{0}START /B {1}{2}".format(prefix, pgm, suffix)
-        rt = self.exec_cmd(cmd)
+        return_code = self.exec_cmd(cmd)
         self._check_n_sleep(sleep_sec)
-        return rt
+        return return_code
 
     def check_pgm(self, pgm):
         """
@@ -487,9 +489,9 @@ class Pybot:
             True if return code of the command is 0, false on contrary
         """
         cmd = "Taskkill /IM {0} /F".format(pgm)
-        rt = self.exec_cmd(cmd, sleep_sec=0)
+        return_code = self.exec_cmd(cmd, sleep_sec=0)
         self._check_n_sleep(sleep_sec)
-        return rt
+        return return_code
 
     def start_web(self, url, sleep_sec=0):
         """
@@ -509,10 +511,10 @@ class Pybot:
             test_automaton.start_web("https://papit.fr")
         """
         cmd = "START {0}".format(url)
-        rt = self.exec_cmd(cmd, sleep_sec=5)
+        return_code = self.exec_cmd(cmd, sleep_sec=5)
         sleep(sleep_sec)
         type(Key.F11)
-        return rt
+        return return_code
 
     def export_sikuli_class(self, project_name):
         """
@@ -552,6 +554,7 @@ class Pybot:
 
         Args:
             project_name: Name of the project to export
+            directory: Export directory of the sikuli project
 
         Raises:
             PybotException if project not found
@@ -574,25 +577,25 @@ class Pybot:
         file_to_write = open(new_file, mode="w", encoding="utf-8")
         file_to_write.write(data_to_export)
         file_to_write.close()
-        project_files = os.listdir(directory_name)
+        project_files = listdir(directory_name)
         for file_name in project_files:
             if file_name.endswith(IMAGE_EXT):
                 img = path.join(directory_name, file_name)
                 copy(img, IMG_FOLDER)
         return path.isfile(new_file)
 
-    def _check_n_sleep(self, s):
+    def _check_n_sleep(self, second):
         """
         Internal method to check s, the number of second to sleep which as to be int or float
 
         Args:
-            s: Number of seconds
+            second: Number of seconds
 
         Raises:
             PybotException
         """
-        if isinstance(s, (int, float)):
-            sleep(s)
+        if isinstance(second, (int, float)):
+            sleep(second)
         else:
             raise PybotException(
                 "sleep_sec KWARG is a time in to sleep after click, therefore must be an int or float")
@@ -603,21 +606,26 @@ class Pybot:
             makedirs(self.database_directory, exist_ok=True)
             db = sqlite3.connect(path.join(self.database_directory, self.database))
             db.execute(
-                'CREATE TABLE IF NOT EXISTS computer (node TEXT PRIMARY KEY, os_type TEXT, os_version TEXT, ts TIMESTAMP);')
+                '''CREATE TABLE IF NOT EXISTS computer 
+                (node TEXT PRIMARY KEY, os_type TEXT, os_version TEXT, ts TIMESTAMP);''')
             request = "INSERT OR REPLACE INTO computer VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
-            db.execute(request, (self.computer, self.OS_type, self.OS_version,))
+            db.execute(request, (self.computer, self.os_type, self.os_version,))
             db.execute(
                 'CREATE TABLE IF NOT EXISTS screen (node TEXT, width INT, height INT, ts TIMESTAMP);')
             request = "INSERT INTO screen VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
             db.execute(request, (self.computer, self.screen_width, self.screen_height,))
             db.commit()
-            request = 'SELECT COUNT (*) FROM (SELECT node, width, height FROM screen WHERE node = ? GROUP BY node, width, height);'
+            request = '''SELECT COUNT (*) 
+            FROM (SELECT node, width, height 
+                FROM screen 
+                WHERE node = ? GROUP BY node, width, height);'''
             cur = db.cursor()
             cur.execute(request, (self.computer,))
             res = cur.fetchone()[0]
             if res > 1:
                 if easygui.ynbox(
-                        'Various screens have been used by this computer.\nIt can mess with Sikuli image recognition.\nShall I continue?',
+                        '''Various screens have been used by this computer.\nIt can mess with Sikuli image recognition.
+Shall I continue?''',
                         'Display warning', ('Yes', 'No')):
                     pass
                 else:
@@ -645,15 +653,6 @@ class Pybot:
             db.close()
 
 
-"""
-PybotTest as unittest.Testcase to test the development of the Pybot class
-test_B_Pybot_init: Test the initialization of the Pybot object
-test_C_pgm: Test of the methods related to program management
-test_D_android: Test of the methods related to Android connection and mirroring
-test_E_web: Test the opening of a website in the default browser
-"""
-
-
 class PybotTest(unittest.TestCase):
     """PybotTest as unittest.Testcase to test the development of the Pybot class"""
 
@@ -666,62 +665,62 @@ class PybotTest(unittest.TestCase):
         pass
 
     @unittest.skip("Initialization of the test not necessary")
-    def test_A_(self):
+    def test_a_(self):
         """Nothing to do yet"""
         pass
 
-    def test_B_Pybot_init(self):
+    def test_b_init(self):
         """Test the init of Pybot class"""
         test_automaton = Pybot()
         assert test_automaton != ""
         assert test_automaton.python_version != ""
-        assert test_automaton.OS_type != ""
-        assert test_automaton.OS_version != ""
+        assert test_automaton.os_type != ""
+        assert test_automaton.os_version != ""
         assert test_automaton.machine != ""
         assert test_automaton.uname != ""
 
-    def test_C_pgm(self):
+    def test_c_pgm(self):
         """Test the method wrapping cmd.exe"""
         test_automaton = Pybot()
         assert test_automaton.start_pgm('node.exe', sleep_sec=5) is True
         assert test_automaton.check_pgm('node.exe') is True
         assert test_automaton.kill_pgm('node.exe') is True
 
-    def test_D_android(self):
+    def test_d_android(self):
         """Test the method necessary to automate Android task"""
         test_automaton = Pybot()
-        assert test_automaton.start_android_gui(sleep_sec=6) == True
-        assert test_automaton.check_android_gui() == True
-        assert test_automaton.stop_android_gui() == True
-        assert test_automaton.android_connected() == True
+        assert test_automaton.start_android_gui(sleep_sec=6) is True
+        assert test_automaton.check_android_gui() is True
+        assert test_automaton.stop_android_gui() is True
+        assert test_automaton.android_connected() is True
         assert test_automaton.android_number() == 1
 
     @unittest.skip("Shutdown the web radio...")
-    def test_E_web(self):
+    def test_e_web(self):
         """Test the opening of a website in the default browser"""
         test_automaton = Pybot()
         test_automaton.start_web("https://papit.fr", sleep_sec=5)
         assert test_automaton.kill_pgm('Firefox.exe') is True
 
-    def test_F_export_sikuli(self):
+    def test_f_export_sikuli(self):
         """Test the export of a sikuli project class to the Pybot python package"""
         test_automaton = Pybot()
         assert test_automaton.export_sikuli_class("tahomaBee") is True
 
-    def test_G_script_sikuli(self):
+    def test_g_script_sikuli(self):
         """Test the export of a sikuli project script to the script library"""
         test_automaton = Pybot()
         assert test_automaton.export_sikuli_script("tahomaBee") is True
 
     @unittest.skip("In case we need the base for other tests")
-    def test_H_script_sikuli(self):
+    def test_h_script_sikuli(self):
         """Test the cache"""
         test_automaton = Pybot()
         assert test_automaton.purge_cache() is True
         test_automaton = Pybot(cache=False)
         assert test_automaton.purge_cache() is True
 
-    def test_I_screenshot(self):
+    def test_i_screenshot(self):
         """Test the screenshot method"""
         test_automaton = Pybot()
         assert test_automaton.screenshot()[2] == ''
