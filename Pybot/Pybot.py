@@ -135,7 +135,7 @@ class Pybot:
             test_automaton.text(lang='eng') # get text of the full screen with english text description
         """
         _, _, text = self.screenshot(bounds=bounds, text=True, lang=lang)
-        remove(path.join(IMG_FOLDER + text[1]))
+        remove(path.join(IMG_FOLDER + text))
         return text
 
     def screenshot(self, bounds=None, text=False, lang=None):
