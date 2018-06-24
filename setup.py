@@ -13,7 +13,7 @@ with open("README.md", 'r', encoding='utf-8') as f:
 
 setup(name=name,
       version=about['__version__'],
-      description='Pybot is an automation framework with GUI features thanks to Sikuli',
+      description='Pybot is an automation framework with GUI features thanks to Sikuli, lackey and scrcpy',
       long_description=readme,
       url='https://papit.fr',
       author='PapIT',
@@ -24,5 +24,5 @@ setup(name=name,
       python_requires=">=3.6",
       zip_safe=False,
       install_requires=['pytest', 'pytest-html', 'lackey', 'isort', 'autopep8', 'wheel', 'easygui', 'pytesseract',
-                        'PIL'],
+                        'pillow'],
       )

@@ -649,8 +649,7 @@ Shall I continue?''',
         if isinstance(file_name, str) is True:
             if self.cache is True:
                 db = sqlite3.connect(path.join(self.database_directory, self.database))
-                db.execute(
-                    ''''CREATE TABLE IF NOT EXISTS screenshot 
+                db.execute('''CREATE TABLE IF NOT EXISTS screenshot 
                     (image TEXT PRIMARY KEY, node TEXT, text TEXT, ts TIMESTAMP);''')
                 request = "INSERT OR REPLACE INTO screenshot VALUES(?, ?, ?, DATETIME('now', 'localtime'));"
                 db.execute(request, (file_name, self.computer, text,))
@@ -658,90 +657,3 @@ Shall I continue?''',
                 db.close()
         else:
             raise TypeError('First argument file_name must be a string type.')
-
-
-class PybotTest(unittest.TestCase):
-    """PybotTest as unittest.Testcase to test the development of the Pybot class."""
-
-    def setUp(self):
-        """Executed before each test, nothing to do yet."""
-        pass
-
-    def tearDown(self):
-        """Executed after each test, nothing to do yet."""
-        pass
-
-    @unittest.skip("Initialization of the test not necessary.")
-    def test_a_(self):
-        """Nothing to do yet"""
-        pass
-
-    def test_b_init(self):
-        """Test the init of Pybot class."""
-        test_automaton = Pybot()
-        assert test_automaton != ""
-        assert test_automaton.python_version != ""
-        assert test_automaton.os_type != ""
-        assert test_automaton.os_version != ""
-        assert test_automaton.machine != ""
-        assert test_automaton.uname != ""
-
-    def test_c_pgm(self):
-        """Test the method to manage programs."""
-        test_automaton = Pybot()
-        assert test_automaton.start_pgm('node.exe', sleep_sec=5) is True
-        assert test_automaton.check_pgm('node.exe') is True
-        assert test_automaton.kill_pgm('node.exe') is True
-
-    def test_d_android(self):
-        """Test the method necessary to automate Android task."""
-        test_automaton = Pybot()
-        assert test_automaton.start_android_gui(sleep_sec=6) is True
-        assert test_automaton.check_android_gui() is True
-        assert test_automaton.stop_android_gui() is True
-        assert test_automaton.android_connected() is True
-        assert test_automaton.android_number() == 1
-
-    @unittest.skip("Shutdown the web radio...")
-    def test_e_web(self):
-        """Test the opening of a website in the default browser."""
-        test_automaton = Pybot()
-        test_automaton.start_web("https://papit.fr", sleep_sec=5)
-        assert test_automaton.kill_pgm('Firefox.exe') is True
-
-    def test_f_export_sikuli(self):
-        """Test the export of a sikuli project class to the Pybot python package."""
-        test_automaton = Pybot()
-        assert test_automaton.export_sikuli_class("TahomaBee") is True
-
-    def test_g_script_sikuli(self):
-        """Test the export of a sikuli project script to the script library."""
-        test_automaton = Pybot()
-        assert test_automaton.export_sikuli_script("TahomaBee") is True
-
-    @unittest.skip("In case we need the base for other tests.")
-    def test_h_script_sikuli(self):
-        """Test the cache."""
-        test_automaton = Pybot()
-        assert test_automaton.purge_cache() is True
-        test_automaton = Pybot(cache=False)
-        assert test_automaton.purge_cache() is True
-
-    def test_i_screenshot(self):
-        """Test the screenshot method."""
-        test_automaton = Pybot()
-        assert test_automaton.screenshot()[2] == ''
-        res = test_automaton.screenshot(text=True)
-        assert res[0] == 1
-        assert res[2] != ''
-        res = test_automaton.screenshot(text=True, lang='eng')
-        assert res[0] == 1
-        print(res[2])
-        assert res[2] != ''
-
-
-if __name__ == '__main__':
-    """
-    Start the tests of the Pybot class
-    """
-    unittest.main()
