@@ -45,6 +45,12 @@ SQLITE3_DATABASE = "pybot.sqlite3"
 SCRCPY_FOLDER = "scrcpy-windows-v1.1"
 SCRCPY_EXE = "scrcpy.exe"
 TESSERACT_CMD = "tesseract"
+ADB_CMD = "adb.exe"
+COMMANDS = {
+    "kill_process": [{"Windows": "Taskkill /IM {0} /F"},
+                     {"Darwin": "pkill {0}"},  # TODO be tested
+                     {"Linux": "pkill {0}"}]  # TODO add linux compatibility and test
+}
 # TODO all the tesseract languages available
 TESSERACT_LANG = {
     "fr": "fra",
@@ -129,7 +135,8 @@ class Pybot:
            :raise TypeError: If wrong bounds kwarg type. Default is None.
            :raise PybotException: If wrong tesseract lang kwarg (tesseract language). Default is None.
            :example:
-              .. code:: python
+              .. code-block:: python
+
                  test_automaton = Pybot()
                  test_automaton.text(lang='eng') # get text of the full screen with english text description
         """
@@ -153,7 +160,8 @@ class Pybot:
            :raise TypeError: If wrong bounds kwarg type.
            :raise PybotException: If wrong tesseract lang kwarg (tesseract language).
            :example:
-              .. code:: python
+              .. code-block:: python
+
                  test_automaton = Pybot()
                  test_automaton.screenshot(lang='eng') # Screenshot of the full screen with english text description
         """
@@ -196,7 +204,8 @@ class Pybot:
            :raise TypeError: If wrong bounds kwarg type.
            :raise PybotException: If wrong tesseract lang kwarg (tesseract language). Default is None.
            :examples:
-              .. code:: python
+              .. code-block:: python
+
                  test_automaton = Pybot()
                  test_automaton.screenshot("1234567891012.png",lang='eng')
         """
@@ -272,7 +281,8 @@ class Pybot:
            :raise TypeError: n must be an integer or float type.
 
            :examples:
-              .. code:: python
+              .. code-block:: python
+
                 test_automaton = Pybot()
                 test_automaton.type_n_time(5, Key.11)
         """
@@ -286,7 +296,7 @@ class Pybot:
             raise TypeError(
                 "n is the number of time to type the key, therefore must be an int or float.")
 
-    def exec_cmd(self, cmd, sleep_sec=0):
+    def exec_cmd(self, cmd, sleep_sec=0, cwd='./'):
         """
         Execute command on Windows OS.
            :param cmd: Command to execute passed a string.
@@ -294,13 +304,15 @@ class Pybot:
            :return: True if return code of the command is 0, false on contrary.
            :raise TypeError: If first argument cmd is not a string type.
            :examples:
-              .. code:: python
+              .. code-block:: python
+
                  test_automaton = Pybot()
                  test_automaton.exec_cmd("DIR")
         """
         if isinstance(cmd, str) is True:
-            return_code = subprocess.call(cmd, shell=True)
+            return_code = subprocess.call(cmd, shell=True, cwd=cwd)
             self._check_n_sleep(sleep_sec)
+            print("CMD>" + cmd + "<RT>" + str(return_code) + "<")
             return return_code == 0
         else:
             raise TypeError('First argument cmd must be an str type.')
@@ -423,7 +435,7 @@ class Pybot:
            :return: Tuple containing the Android Serial number and device type.
         """
         adb_output = subprocess.check_output(
-            [path.join(SCRCPY_FOLDER, "adb.exe"), "devices"]).decode()
+            [path.join(SCRCPY_FOLDER, ADB_CMD), "devices"]).decode()
         tup = re.findall("\n([\w]*)\t([\w]*)\r", adb_output)
         android_arr = []
         if tup is not None:
@@ -458,24 +470,26 @@ class Pybot:
            :return: True if return code of the command is 0, false on contrary.
            :raise TypeError: If kwarg pgm_arg or working_direcory kwarg are not None or string type.
            :examples:
-              .. code:: python
+              .. code-block:: python
+              
                  test_automaton = Pybot()
                  test_automaton.start_pgm('node.exe', working_directory='server', sleep_sec=5)
         """
         if isinstance(pgm_arg, str) is True or pgm_arg is None:
             if isinstance(working_directory, str) is True or pgm_arg is None:
                 if working_directory is None:
-                    prefix = ""
+                    cwd = "./"
                 else:
-                    prefix = "cd {0} && ".format(working_directory)
+                    cwd = working_directory
 
                 if pgm_arg is None:
                     suffix = ""
                 else:
                     suffix = " {0}".format(pgm_arg)
 
-                cmd = "{0}START /B {1}{2}".format(prefix, pgm, suffix)
-                return_code = self.exec_cmd(cmd)
+                # cmd = "{0}START /B {1}{2}".format(prefix, pgm, suffix)
+                cmd = "{0}{1}".format(pgm, suffix)
+                return_code = self.exec_cmd(cmd, cwd=cwd)
                 self._check_n_sleep(sleep_sec)
                 return return_code
             else:
@@ -491,7 +505,8 @@ class Pybot:
            :raise TypeError: If only argument pgm is not a string.
 
            :examples:
-              .. code:: python
+              .. code-block:: python
+
                  test_automaton = Pybot()
                  test_automaton.check_pgm("Firefox.exe")
         """
@@ -511,7 +526,7 @@ class Pybot:
            :raise TypeError: If kwarg pgm_arg or working_direcory kwarg are not None or string type.
         """
         if isinstance(pgm, str) is True:
-            cmd = "Taskkill /IM {0} /F".format(pgm)
+            cmd = COMMANDS["kill_process"][self.os_type].format(pgm)
             return_code = self.exec_cmd(cmd, sleep_sec=0)
             self._check_n_sleep(sleep_sec)
             return return_code
@@ -526,7 +541,8 @@ class Pybot:
            :return: True if return code of the command is 0, false on contrary.
            :raise TypeError: If only argument url is not a string.
            :examples:
-              .. code:: python
+              .. code-block:: python
+
                  test_automaton = Pybot()
                  test_automaton.start_web("https://papit.fr")
         """
@@ -546,7 +562,8 @@ class Pybot:
            :param project_name: Name of the project to export.
            :return: True if class file created, False on contrary.
            :examples:
-              .. code:: python
+              .. code-block:: python
+
                  test_automaton = Pybot()
                  test_automaton.export_sikuli_class("tahomaBee")
         """
@@ -558,7 +575,8 @@ class Pybot:
            :param project_name: Name of the project to export.
            :return: True if script file created, False on contrary.
            :examples:
-              .. code:: python
+              .. code-block:: python
+
                  test_automaton = Pybot()
                  test_automaton.export_sikuli_script("tahomaBee")
         """

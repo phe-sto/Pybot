@@ -29,7 +29,7 @@ def test_b_init(test_automaton):
 
 def test_c_pgm(test_automaton):
     """Test the method to manage programs."""
-    assert test_automaton.start_pgm('node.exe', sleep_sec=5) is True
+    assert test_automaton.start_pgm('node.exe', sleep_sec=10) is True
     assert test_automaton.check_pgm('node.exe') is True
     assert test_automaton.kill_pgm('node.exe') is True
 
