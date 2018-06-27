@@ -21,7 +21,7 @@ import subprocess
 import unittest
 from datetime import datetime
 # To start program of command
-from os import path, makedirs, remove, listdir
+from os import path, makedirs, remove, listdir, system
 from shutil import copy, rmtree, move
 from time import sleep
 
@@ -47,9 +47,12 @@ SCRCPY_EXE = "scrcpy.exe"
 TESSERACT_CMD = "tesseract"
 ADB_CMD = "adb.exe"
 COMMANDS = {
-    "kill_process": [{"Windows": "Taskkill /IM {0} /F"},
-                     {"Darwin": "pkill {0}"},  # TODO be tested
-                     {"Linux": "pkill {0}"}]  # TODO add linux compatibility and test
+    "kill_process": {"Windows": "taskkill /im {0} /f",
+                     "Darwin": "pkill {0}",  # TODO be tested
+                     "Linux": "pkill {0}"},  # TODO add linux compatibility and test
+    "check_process": {"Windows": 'tasklist /FI "IMAGENAME eq {0}" 2>NUL | find /I /N "{0}">NUL',
+                     "Darwin": "pkill {0}",  # TODO be tested
+                     "Linux": "pkill {0}"},  # TODO be tested
 }
 # TODO all the tesseract languages available
 TESSERACT_LANG = {
@@ -296,7 +299,7 @@ class Pybot:
             raise TypeError(
                 "n is the number of time to type the key, therefore must be an int or float.")
 
-    def exec_cmd(self, cmd, sleep_sec=0, cwd='./'):
+    def exec_cmd(self, cmd, sleep_sec=0):
         """
         Execute command on Windows OS.
            :param cmd: Command to execute passed a string.
@@ -310,10 +313,9 @@ class Pybot:
                  test_automaton.exec_cmd("DIR")
         """
         if isinstance(cmd, str) is True:
-            return_code = subprocess.call(cmd, shell=True, cwd=cwd)
+            rt = system(cmd)
             self._check_n_sleep(sleep_sec)
-            print("CMD>" + cmd + "<RT>" + str(return_code) + "<")
-            return return_code == 0
+            return rt == 0
         else:
             raise TypeError('First argument cmd must be an str type.')
 
@@ -478,20 +480,19 @@ class Pybot:
         if isinstance(pgm_arg, str) is True or pgm_arg is None:
             if isinstance(working_directory, str) is True or pgm_arg is None:
                 if working_directory is None:
-                    cwd = "./"
+                    prefix = ""
                 else:
-                    cwd = working_directory
+                    prefix = "cd {0} && ".format(working_directory)
 
                 if pgm_arg is None:
                     suffix = ""
                 else:
                     suffix = " {0}".format(pgm_arg)
 
-                # cmd = "{0}START /B {1}{2}".format(prefix, pgm, suffix)
-                cmd = "{0}{1}".format(pgm, suffix)
-                return_code = self.exec_cmd(cmd, cwd=cwd)
+                cmd = "{0}START /B {1}{2}".format(prefix, pgm, suffix)
+                rt = self.exec_cmd(cmd)
                 self._check_n_sleep(sleep_sec)
-                return return_code
+                return rt
             else:
                 raise TypeError('Kwarg working_directory must a string type.')
         else:
@@ -511,7 +512,8 @@ class Pybot:
                  test_automaton.check_pgm("Firefox.exe")
         """
         if isinstance(pgm, str) is True:
-            cmd = 'tasklist /nh /fi "imagename eq {0}" | find /i "{0}" > nul'.format(
+
+            cmd = 'tasklist /FI "IMAGENAME eq {0}" 2>NUL | find /I /N "{0}">NUL'.format(
                 pgm)
             return self.exec_cmd(cmd, sleep_sec=0)
         else:
