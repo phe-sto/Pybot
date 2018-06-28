@@ -18,7 +18,6 @@ import re
 import sqlite3
 import subprocess
 # Import unittest in case of test automation
-import unittest
 from datetime import datetime
 # To start program of command
 from os import path, makedirs, remove, listdir, system
@@ -51,8 +50,8 @@ COMMANDS = {
                      "Darwin": "pkill {0}",  # TODO be tested
                      "Linux": "pkill {0}"},  # TODO add linux compatibility and test
     "check_process": {"Windows": 'tasklist /FI "IMAGENAME eq {0}" 2>NUL | find /I /N "{0}">NUL',
-                     "Darwin": "pkill {0}",  # TODO be tested
-                     "Linux": "pkill {0}"},  # TODO be tested
+                      "Darwin": "pkill {0}",  # TODO be tested
+                      "Linux": "pkill {0}"},  # TODO be tested
 }
 # TODO all the tesseract languages available
 TESSERACT_LANG = {
@@ -489,7 +488,7 @@ class Pybot:
                 else:
                     suffix = " {0}".format(pgm_arg)
 
-                cmd = "{0}START /B {1}{2}".format(prefix, pgm, suffix)
+                cmd = "{0}START CMD /C {1}{2}".format(prefix, pgm, suffix)
                 rt = self.exec_cmd(cmd)
                 self._check_n_sleep(sleep_sec)
                 return rt
