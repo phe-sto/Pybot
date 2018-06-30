@@ -19,9 +19,11 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-Pybot
-=====
+About Pybot
+===========
 .. include:: ../README.rst
 
+Pybot API
+=========
 .. automodule:: Pybot.Pybot
     :members:

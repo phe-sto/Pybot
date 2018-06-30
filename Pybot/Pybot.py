@@ -511,9 +511,9 @@ class Pybot:
                  test_automaton.check_pgm("Firefox.exe")
         """
         if isinstance(pgm, str) is True:
-
-            cmd = 'tasklist /FI "IMAGENAME eq {0}" 2>NUL | find /I /N "{0}">NUL'.format(
-                pgm)
+            cmd = COMMANDS["check_process"][self.os_type].format(pgm)
+            #cmd = 'tasklist /FI "IMAGENAME eq {0}" 2>NUL | find /I /N "{0}">NUL'.format(
+            #    pgm)
             return self.exec_cmd(cmd, sleep_sec=0)
         else:
             raise TypeError('First argument pgm must be a string type.')
