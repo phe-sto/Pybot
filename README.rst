@@ -1,4 +1,6 @@
-|Logo|
+=====
+Pybot
+=====
 
 This automation framework aims to interact with GUI (web, desktop,
 android, etc) from the computer, or a connected Android. Many tasks
@@ -10,8 +12,6 @@ for workstation testing and automation. For Android only, Appium or similar tech
 computer vision are more reliable. If Appium can't be used, or for any GUI in a VM without
 accessible tags, computer vision based technologies are still a good option for testing
 and automation.
-
-|Architecture|
 
 Platforms
 ---------
@@ -80,6 +80,8 @@ Scripts and classes are available in the venv virtualenv. To activate this one:
       Pybot activtate
 
 Clear the virtualenv:
+   .. code-block:: bat
+
       Pybot clear
 
 API
@@ -93,6 +95,3 @@ API
 .. _Java: https://www.java.com/fr/download/
 .. _Tesseract OCR: https://github.com/tesseract-ocr/tesseract
 .. _Full documentation API can be found here: https://www.papit.fr/pybot/
-
-.. |Logo| image:: ../img/Pybot.png
-.. |Architecture| image:: ../img/PybotArch.png
