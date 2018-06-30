@@ -82,11 +82,17 @@ Scripts and classes are available in the venv virtualenv. To activate this one:
 Clear the virtualenv:
       Pybot clear
 
+API
+---
+
+`Full documentation API can be found here`_.
+
 .. _scrpy: https://github.com/Genymobile/scrcpy
 .. _Python 3.6: https://www.python.org/downloads/
 .. _Sikuli IDE: http://www.sikuli.org/downloadrc3.html
 .. _Java: https://www.java.com/fr/download/
 .. _Tesseract OCR: https://github.com/tesseract-ocr/tesseract
+.. _Full documentation API can be found here: https://www.papit.fr/pybot/
 
 .. |Logo| image:: ../img/Pybot.png
 .. |Architecture| image:: ../img/PybotArch.png
