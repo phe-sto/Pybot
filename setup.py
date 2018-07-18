@@ -8,7 +8,7 @@ about = {}
 with open(os.path.join(here, name, '__init__.py'), 'r', encoding='utf-8') as f:
     exec(f.read(), about)
 
-with open("README.md", 'r', encoding='utf-8') as f:
+with open("README.rst", 'r', encoding='utf-8') as f:
     readme = f.read()
 
 setup(name=name,
